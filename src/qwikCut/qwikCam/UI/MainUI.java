@@ -1,5 +1,9 @@
 package qwikCut.qwikCam.UI;
 
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -8,7 +12,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JTextPane;
 import javax.swing.SpringLayout;
 
-public class mainUI
+public class MainUI
 {
 
 	private JFrame frmQwikcamControl;
@@ -30,7 +34,7 @@ public class mainUI
 	/**
 	 * Create the application.
 	 */
-	public mainUI()
+	public MainUI()
 	{
 		initialize();
 		frmQwikcamControl.setVisible(true);
@@ -101,6 +105,25 @@ public class mainUI
 		cameraButton = new JButton("Camera Select");
 		springLayout.putConstraint(SpringLayout.NORTH, cameraButton, 0, SpringLayout.NORTH, ctrlSelect);
 		springLayout.putConstraint(SpringLayout.WEST, cameraButton, 77, SpringLayout.EAST, ctrlSelect);
+		cameraButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				EventQueue.invokeLater(new Runnable()
+				{
+					public void run()
+					{
+						try
+						{
+							new CameraUI();
+						} catch (Exception e)
+						{
+							e.printStackTrace();
+						}
+					}
+				});
+			}
+		});
 		frmQwikcamControl.getContentPane().add(cameraButton);
 
 		panDeadzoneBtn = new JButton("DeadZone Set");
