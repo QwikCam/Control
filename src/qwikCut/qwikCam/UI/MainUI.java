@@ -3,6 +3,7 @@ package qwikCut.qwikCam.UI;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -37,7 +38,6 @@ public class MainUI
 	public MainUI()
 	{
 		initialize();
-		frmQwikcamControl.setVisible(true);
 	}
 
 	/**
@@ -154,5 +154,15 @@ public class MainUI
 		springLayout.putConstraint(SpringLayout.WEST, cameraSettingsBtn, 0, SpringLayout.WEST, infoDsp);
 		springLayout.putConstraint(SpringLayout.SOUTH, cameraSettingsBtn, 0, SpringLayout.SOUTH, zoomProgressBar);
 		frmQwikcamControl.getContentPane().add(cameraSettingsBtn);
+		
+		frmQwikcamControl.setVisible(true);
+	}
+	
+	public void setCombo(ArrayList<String> list)
+	{
+		for (String s : list)
+		{
+			ctrlSelect.addItem(s);
+		}
 	}
 }
