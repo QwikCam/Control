@@ -4,19 +4,18 @@ import java.awt.EventQueue;
 
 import qwikCut.qwikCam.UI.mainUI;
 
-public class Main 
+public class Main
 {
 	public static void main(String[] args)
 	{
-		EventQueue.invokeLater(new Runnable() 
+		EventQueue.invokeLater(new Runnable()
 		{
-			public void run() 
+			public void run()
 			{
-				try 
+				try
 				{
 					mainUI window = new mainUI();
-				} 
-				catch (Exception e) 
+				} catch (Exception e)
 				{
 					e.printStackTrace();
 				}
