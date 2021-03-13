@@ -3,7 +3,9 @@ package qwikCut.qwikCam.UI;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -13,9 +15,10 @@ import javax.swing.JProgressBar;
 import javax.swing.JTextPane;
 import javax.swing.SpringLayout;
 
+import qwikCut.qwikCam.Runner.ControllerInterface;
+
 public class MainUI
 {
-
 	private JFrame frmQwikcamControl;
 	public JComboBox<String> ctrlSelect;
 	public JLabel ctrlSelectLabel;
@@ -31,13 +34,35 @@ public class MainUI
 	public JButton zoomDeadzoneBrn;
 	public JTextPane infoDsp;
 	public JButton cameraSettingsBtn;
+	public JButton ctrlConfirm;
+	
+	private ControllerInterface ctrlHandler;
 
 	/**
 	 * Create the application.
 	 */
-	public MainUI()
+	public MainUI(ControllerInterface sync)
 	{
+		this.ctrlHandler = sync;
 		initialize();
+	}
+
+	private void startProb()
+	{
+		TimerTask RX = new TimerTask()
+		{
+			@Override
+			public void run()
+			{
+				tiltProgressBar.setValue(ctrlHandler.readController(2));
+				panProgressBar.setValue(ctrlHandler.readController(4));
+				zoomProgressBar.setValue(ctrlHandler.readController(3));
+				frmQwikcamControl.repaint();
+			}
+		};
+		
+		Timer timer = new Timer();
+		timer.scheduleAtFixedRate(RX, 0, 100);
 	}
 
 	/**
@@ -72,8 +97,8 @@ public class MainUI
 		frmQwikcamControl.getContentPane().add(panInputLabel);
 
 		panProgressBar = new JProgressBar();
-		panProgressBar.setMaximum(1);
-		panProgressBar.setMinimum(-1);
+		panProgressBar.setMaximum(1000);
+		panProgressBar.setMinimum(-1000);
 		springLayout.putConstraint(SpringLayout.NORTH, panProgressBar, 6, SpringLayout.SOUTH, panInputLabel);
 		springLayout.putConstraint(SpringLayout.WEST, panProgressBar, 10, SpringLayout.WEST, frmQwikcamControl.getContentPane());
 		frmQwikcamControl.getContentPane().add(panProgressBar);
@@ -84,8 +109,8 @@ public class MainUI
 		frmQwikcamControl.getContentPane().add(tiltInputLabel);
 
 		tiltProgressBar = new JProgressBar();
-		tiltProgressBar.setMinimum(-1);
-		tiltProgressBar.setMaximum(1);
+		tiltProgressBar.setMinimum(-1000);
+		tiltProgressBar.setMaximum(1000);
 		springLayout.putConstraint(SpringLayout.NORTH, tiltProgressBar, 37, SpringLayout.SOUTH, panProgressBar);
 		springLayout.putConstraint(SpringLayout.WEST, tiltProgressBar, 10, SpringLayout.WEST, frmQwikcamControl.getContentPane());
 		frmQwikcamControl.getContentPane().add(tiltProgressBar);
@@ -96,8 +121,8 @@ public class MainUI
 		frmQwikcamControl.getContentPane().add(zoomLvlLabel);
 
 		zoomProgressBar = new JProgressBar();
-		zoomProgressBar.setMinimum(-1);
-		zoomProgressBar.setMaximum(1);
+		zoomProgressBar.setMinimum(-1000);
+		zoomProgressBar.setMaximum(1000);
 		springLayout.putConstraint(SpringLayout.NORTH, zoomProgressBar, 43, SpringLayout.SOUTH, tiltProgressBar);
 		springLayout.putConstraint(SpringLayout.WEST, zoomProgressBar, 10, SpringLayout.WEST, frmQwikcamControl.getContentPane());
 		frmQwikcamControl.getContentPane().add(zoomProgressBar);
@@ -155,10 +180,44 @@ public class MainUI
 		springLayout.putConstraint(SpringLayout.SOUTH, cameraSettingsBtn, 0, SpringLayout.SOUTH, zoomProgressBar);
 		frmQwikcamControl.getContentPane().add(cameraSettingsBtn);
 		
+		ctrlConfirm = new JButton("Confirm Controller");
+		springLayout.putConstraint(SpringLayout.NORTH, ctrlConfirm, 6, SpringLayout.SOUTH, ctrlSelect);
+		springLayout.putConstraint(SpringLayout.WEST, ctrlConfirm, 10, SpringLayout.WEST, frmQwikcamControl.getContentPane());
+		ctrlConfirm.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				EventQueue.invokeLater(new Runnable()
+				{
+					public void run()
+					{
+						String selection = (String) ctrlSelect.getSelectedItem();
+						
+						// check if its a valid controller
+						if (!selection.equals("Please select from below"))
+						{						
+							if (ctrlHandler.setController(selection))
+							{
+								System.out.println("Set");
+								ctrlSelect.setEnabled(false);
+								ctrlConfirm.setEnabled(false);
+								startProb();
+							}
+							else
+							{
+								System.out.println("Not found");
+							}
+						}
+					}
+				});
+			}
+		});
+		frmQwikcamControl.getContentPane().add(ctrlConfirm);
+		
 		frmQwikcamControl.setVisible(true);
 	}
 	
-	public void setCombo(ArrayList<String> list)
+	public void setCombo(HashSet<String> list)
 	{
 		for (String s : list)
 		{

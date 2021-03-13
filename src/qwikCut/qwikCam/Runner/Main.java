@@ -1,6 +1,5 @@
 package qwikCut.qwikCam.Runner;
 
-import java.awt.EventQueue;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,6 +12,7 @@ public class Main
 {
 	private static MainUI window;
 	private static CtrlHandler controller;
+	public static ControllerInterface sync = new DataHandler();
 	
 	public static void main(String[] args)
 	{
@@ -28,33 +28,9 @@ public class Main
 			e.printStackTrace();
 		}
 		
-		controller = new CtrlHandler();
-//		startGUI();
-		try
-		{
-			window = new MainUI();
-		} catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		controller = new CtrlHandler(sync);
+		window = new MainUI(sync);
 		window.setCombo(controller.getList());
-	}
-	
-	private static void startGUI()
-	{
-		EventQueue.invokeLater(new Runnable()
-		{
-			public void run()
-			{
-				try
-				{
-					window = new MainUI();
-				} catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-			}
-		});
 	}
 	
 	private static void copyAndPath(ArrayList<String> name) throws IOException
@@ -93,4 +69,6 @@ public class Main
 		
 		System.setProperty("net.java.games.input.librarypath", sb.toString());
 	}
+	
+	
 }

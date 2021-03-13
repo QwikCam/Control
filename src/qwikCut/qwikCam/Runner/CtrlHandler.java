@@ -1,37 +1,34 @@
 package qwikCut.qwikCam.Runner;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
 
 public class CtrlHandler
 {
-	private ArrayList<String> displayed;
+	private HashSet<String> displayed;
+	
+	private HashMap<String, Controller> ctrlMap = new HashMap<>();
+	
+	private ControllerInterface dataHandler;
 
-	public CtrlHandler()
+	public CtrlHandler(ControllerInterface sync)
 	{
-		try
-		{
-			init();
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+		this.dataHandler = sync;
+		init();
+		dataHandler.setInputMap(ctrlMap);
 	}
 
-	private void init() throws IOException
+	private void init()
 	{
 		Controller[] all = ControllerEnvironment.getDefaultEnvironment().getControllers();
 		ArrayList<Controller> filtered = new ArrayList<>();
-//		Controller selected = null;
 
-		System.out.printf("Please select the controller to use from the list below.\n\n");
-
-		int j = 1;
-
-		displayed = new ArrayList<>();
+		displayed = new HashSet<>();
+		displayed.add("Please select from below");
 
 		for (int i = 0; i < all.length; i++)
 		{
@@ -51,14 +48,13 @@ public class CtrlHandler
 
 			if (displayed.add(temp.getName()))
 			{
-				System.out.printf((j++) + ". " + all[i] + "\twith type: " + all[i].getType() + "\n");
+				ctrlMap.put(temp.getName(), temp);
 				filtered.add(temp);
-//				selected = temp;
 			}
 		}
 	}
 
-	public ArrayList<String> getList()
+	public HashSet<String> getList()
 	{
 		return this.displayed;
 	}
