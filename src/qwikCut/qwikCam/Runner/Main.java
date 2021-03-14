@@ -4,8 +4,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.ConnectException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
+import de.onvif.soap.OnvifDevice;
+import jakarta.xml.soap.SOAPException;
 import qwikCut.qwikCam.UI.MainUI;
 
 public class Main
@@ -13,7 +18,7 @@ public class Main
 	private static MainUI window;
 	private static CtrlHandler controller;
 	public static ControllerInterface sync = new DataHandler();
-	
+
 	public static void main(String[] args)
 	{
 		try
@@ -27,12 +32,25 @@ public class Main
 		{
 			e.printStackTrace();
 		}
-		
+
 		controller = new CtrlHandler(sync);
 		window = new MainUI(sync);
 		window.setCombo(controller.getList());
+
+		try
+		{
+			OnvifDevice nvt = new OnvifDevice("192.168.2.191:8000", "admin", "");
+			Date nvtDate = nvt.getDevices().getDate();
+			System.out.println(new SimpleDateFormat().format(nvtDate));
+		} catch (ConnectException e)
+		{
+			System.err.println("Could not connect to NVT.");
+		} catch (SOAPException e)
+		{
+			e.printStackTrace();
+		}
 	}
-	
+
 	private static void copyAndPath(ArrayList<String> name) throws IOException
 	{
 		String path = "";
@@ -53,22 +71,21 @@ public class Main
 			System.out.println(temp.getAbsolutePath());
 			path = temp.getAbsolutePath();
 		}
-		
+
 		StringBuilder sb = new StringBuilder();
 
 		for (String s : path.split("\\\\"))
 		{
 			if (!(s.contains(".dll")))
 			{
-				sb.append(s+"\\");
+				sb.append(s + "\\");
 			}
 		}
-		
+
 		String full = sb.toString();
-		System.out.println(full);
-		
-		System.setProperty("net.java.games.input.librarypath", sb.toString());
+		System.out.println(full.substring(0, full.length() - 1));
+
+		System.setProperty("net.java.games.input.librarypath", full.substring(0, full.length() - 1));
 	}
-	
-	
+
 }

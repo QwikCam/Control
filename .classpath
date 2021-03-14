@@ -1,8 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-10">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="miglayout15-swing.jar" sourcepath="miglayout-src.zip"/>
 	<classpathentry kind="lib" path="Z:/QwikCam/Control/jinput-2.0.9.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-10"/>
+	<classpathentry kind="lib" path="Z:/QwikCam/onvif.jar"/>
+	<classpathentry kind="lib" path="Z:/QwikCam/glassfixh_jaxb/codemodel-3.0.0.jar"/>
+	<classpathentry kind="lib" path="Z:/QwikCam/glassfixh_jaxb/dtd-parser-1.4.3.jar"/>
+	<classpathentry kind="lib" path="Z:/QwikCam/glassfixh_jaxb/istack-commons-runtime-4.0.0.jar"/>
+	<classpathentry kind="lib" path="Z:/QwikCam/glassfixh_jaxb/istack-commons-tools-4.0.0.jar"/>
+	<classpathentry kind="lib" path="Z:/QwikCam/glassfixh_jaxb/jakarta.activation-2.0.0.jar"/>
+	<classpathentry kind="lib" path="Z:/QwikCam/glassfixh_jaxb/jakarta.xml.bind-api-3.0.0.jar"/>
+	<classpathentry kind="lib" path="Z:/QwikCam/glassfixh_jaxb/jakarta.xml.soap-api-2.0.0.jar"/>
+	<classpathentry kind="lib" path="Z:/QwikCam/glassfixh_jaxb/jaxb-core-3.0.0.jar"/>
+	<classpathentry kind="lib" path="Z:/QwikCam/glassfixh_jaxb/jaxb-jxc-3.0.0.jar"/>
+	<classpathentry kind="lib" path="Z:/QwikCam/glassfixh_jaxb/jaxb-runtime-3.0.0.jar"/>
+	<classpathentry kind="lib" path="Z:/QwikCam/glassfixh_jaxb/jaxb-xjc-3.0.0.jar"/>
+	<classpathentry kind="lib" path="Z:/QwikCam/glassfixh_jaxb/relaxng-datatype-3.0.0.jar"/>
+	<classpathentry kind="lib" path="Z:/QwikCam/glassfixh_jaxb/rngom-3.0.0.jar"/>
+	<classpathentry kind="lib" path="Z:/QwikCam/glassfixh_jaxb/txw2-3.0.0.jar"/>
+	<classpathentry kind="lib" path="Z:/QwikCam/glassfixh_jaxb/xsom-3.0.0.jar"/>
+	<classpathentry kind="lib" path="Z:/QwikCam/saaj-impl-2.0.0.jar"/>
+	<classpathentry kind="lib" path="Z:/QwikCam/glassfixh_jaxb/stax-ex-2.0.0.jar"/>
+	<classpathentry kind="lib" path="Z:/QwikCam/glassfixh_jaxb/commons-codec-1.15.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
