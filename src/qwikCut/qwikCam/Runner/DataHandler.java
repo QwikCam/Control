@@ -63,6 +63,8 @@ public class DataHandler implements ControllerInterface
 		this.map = map;
 	}
 	
+	// reads the values from the controller
+	// stores the axis data to variables for other methods to read
 	private void pollController()
 	{
 		TimerTask tx = new TimerTask()
@@ -85,6 +87,9 @@ public class DataHandler implements ControllerInterface
 					if (id == Axis.RX)
 					{
 						// Right Stick Left and Right
+						
+						// this line is where we apply our input map
+						// for example: RX = inputMap(RX, data)
 						RX = (int)(data*1000);
 					}
 					else if (id == Axis.RY)

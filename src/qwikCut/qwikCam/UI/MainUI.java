@@ -15,6 +15,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JTextPane;
 import javax.swing.SpringLayout;
 
+import qwikCut.qwikCam.Runner.CameraInterface;
 import qwikCut.qwikCam.Runner.ControllerInterface;
 
 public class MainUI
@@ -37,16 +38,20 @@ public class MainUI
 	public JButton ctrlConfirm;
 	
 	private ControllerInterface ctrlHandler;
+	private CameraInterface camera;
 
 	/**
 	 * Create the application.
 	 */
-	public MainUI(ControllerInterface sync)
+	public MainUI(ControllerInterface sync, CameraInterface camera)
 	{
 		this.ctrlHandler = sync;
+		this.camera = camera;
 		initialize();
 	}
 
+	// Reads the data of each axis and updates the progress bars
+	// runs constantly every 100ms
 	private void startProb()
 	{
 		TimerTask RX = new TimerTask()
@@ -140,7 +145,8 @@ public class MainUI
 					{
 						try
 						{
-							new CameraUI();
+							if (!camera.hasConnection())
+								new CameraUI(camera);
 						} catch (Exception e)
 						{
 							e.printStackTrace();
