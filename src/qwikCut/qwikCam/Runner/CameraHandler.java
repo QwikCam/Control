@@ -46,7 +46,23 @@ public class CameraHandler implements CameraInterface
 	// the method that works best for the software
 	private void getOptimalMoveMethod()
 	{
+		if (ptzDevices.isRelativeMoveSupported(profileToken))
+		{
+			movementType = 1;
+			return;
+		}
+		else if (ptzDevices.isAbsoluteMoveSupported(profileToken))
+		{
+			movementType = 0;
+			return;
+		}
+		else if (ptzDevices.isContinuosMoveSupported(profileToken))
+		{
+			movementType = 2;
+			return;
+		}
 		
+		movementType = -1;
 	}
 	
 	// This method establishes the connection to the camera
@@ -56,7 +72,6 @@ public class CameraHandler implements CameraInterface
 	// returns a -1 otherwise
 	private int connectCamera()
 	{
-//		return 1;
 		try
 		{
 			camera = new OnvifDevice(ip, username, password);
@@ -67,6 +82,17 @@ public class CameraHandler implements CameraInterface
 			ptzDevices = camera.getPtz();
 			
 			validConn = 1;
+			getOptimalMoveMethod();
+			
+			// if the camera does not support any of the movement types
+			// make this method return 0 to throw a warning to the user
+			// make sure to reference this escape clause in troubleshooting
+			// steps since it may be unclear.
+			if (movementType == -1)
+			{
+				return 0;
+			}
+			
 			return 1;
 			
 //			if (ptzDevices.isContinuosMoveSupported(profileToken))
