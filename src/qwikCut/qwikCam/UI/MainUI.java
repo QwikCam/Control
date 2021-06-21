@@ -30,9 +30,7 @@ public class MainUI
 	public JProgressBar tiltProgressBar;
 	public JProgressBar zoomProgressBar;
 	public JButton cameraButton;
-	public JButton panDeadzoneBtn;
-	public JButton tiltDeadzoneBtn;
-	public JButton zoomDeadzoneBrn;
+	public JButton controllerUIBtn;
 	public JTextPane infoDsp;
 	public JButton cameraSettingsBtn;
 	public JButton ctrlConfirm;
@@ -157,20 +155,32 @@ public class MainUI
 		});
 		frmQwikcamControl.getContentPane().add(cameraButton);
 
-		panDeadzoneBtn = new JButton("DeadZone Set");
-		springLayout.putConstraint(SpringLayout.WEST, panDeadzoneBtn, 0, SpringLayout.WEST, cameraButton);
-		springLayout.putConstraint(SpringLayout.SOUTH, panDeadzoneBtn, 0, SpringLayout.SOUTH, panProgressBar);
-		frmQwikcamControl.getContentPane().add(panDeadzoneBtn);
-
-		tiltDeadzoneBtn = new JButton("DeadZone Set");
-		springLayout.putConstraint(SpringLayout.WEST, tiltDeadzoneBtn, 0, SpringLayout.WEST, cameraButton);
-		springLayout.putConstraint(SpringLayout.SOUTH, tiltDeadzoneBtn, 0, SpringLayout.SOUTH, tiltProgressBar);
-		frmQwikcamControl.getContentPane().add(tiltDeadzoneBtn);
-
-		zoomDeadzoneBrn = new JButton("DeadZone Set");
-		springLayout.putConstraint(SpringLayout.WEST, zoomDeadzoneBrn, 0, SpringLayout.WEST, cameraButton);
-		springLayout.putConstraint(SpringLayout.SOUTH, zoomDeadzoneBrn, 0, SpringLayout.SOUTH, zoomProgressBar);
-		frmQwikcamControl.getContentPane().add(zoomDeadzoneBrn);
+		controllerUIBtn = new JButton("Controller UI");
+		springLayout.putConstraint(SpringLayout.WEST, controllerUIBtn, 0, SpringLayout.WEST, cameraButton);
+		springLayout.putConstraint(SpringLayout.SOUTH, controllerUIBtn, 0, SpringLayout.SOUTH, panProgressBar);
+		frmQwikcamControl.getContentPane().add(controllerUIBtn);
+		controllerUIBtn.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent E) 
+			{ 
+				EventQueue.invokeLater(new Runnable()
+				{
+					public void run() 
+					{
+						try
+						{
+							new ControllerUI(ctrlHandler);
+							
+						} catch (Exception e)
+						{
+							e.printStackTrace();
+						}
+					}
+					
+				});
+			}
+		
+		});
 
 		infoDsp = new JTextPane();
 		springLayout.putConstraint(SpringLayout.NORTH, infoDsp, 28, SpringLayout.NORTH, frmQwikcamControl.getContentPane());

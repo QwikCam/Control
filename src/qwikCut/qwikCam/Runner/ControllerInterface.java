@@ -11,4 +11,6 @@ public interface ControllerInterface
 	public int readController(int axis);
 	
 	public void setInputMap(HashMap<String, Controller> map);
+	
+	public void setLinearity(int[] setting);
 }

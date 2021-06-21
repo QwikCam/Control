@@ -15,6 +15,9 @@ public class DataHandler implements ControllerInterface
 {
 	private Controller ctrl;
 	private HashMap<String, Controller> map;
+	private int linearityX = 0;
+	private int linearityY = 0;
+	private int linearityZ = 0;
 	
 	private int RX, RY, Z, X, Y;
 
@@ -90,27 +93,27 @@ public class DataHandler implements ControllerInterface
 						
 						// this line is where we apply our input map
 						// for example: RX = inputMap(RX, data)
-						RX = (int)(data*1000);
+						RX = inputMap(id, data);
 					}
 					else if (id == Axis.RY)
 					{
 						// Right Stick Up and Down
-						RY = (int)(data*1000);
+						RY = inputMap(id, data);
 					}
 					else if (id == Axis.Z)
 					{
 						// Triggers
-						Z = (int)(data*1000);
+						Z = inputMap(id, data);
 					}
 					else if (id == Axis.X)
 					{
 						// Left Stick Left and Right
-						X = (int)(data*1000);
+						X = inputMap(id, data);
 					}
 					else if (id == Axis.Y)
 					{
 						// Left Stick Up and Down
-						Y = (int)(data*1000);
+						Y = inputMap(id, data);
 					}
 				}
 				
@@ -119,5 +122,72 @@ public class DataHandler implements ControllerInterface
 		
 		Timer timer = new Timer();
 		timer.scheduleAtFixedRate(tx, 0, 10);
+	}
+	
+	@Override 
+	public void setLinearity(int[] setting) 
+	{
+		// linear = 0
+		this.linearityX = setting[0];
+		this.linearityY = setting[1];
+		this.linearityZ = setting[2];
+		
+		System.out.println(setting[0]);
+
+		
+	}
+	
+	private int inputMap(Identifier id, float data)
+	{
+		
+		// Right Stick Left and Right
+		
+		// this line is where we apply our input map
+		// for example: RX = inputMap(RX, data)
+	
+		if (id == Axis.RX)
+		{
+			if (linearityX == 1)
+			{
+				int testValue =  (int)(data*.065+(.94*data*data)*1000);
+				System.out.println(testValue + " ," + (int)(data*1000));
+				return testValue;				
+			}
+			else 
+			{
+				return (int)(data*1000);
+			}
+				
+		}
+		else if (id == Axis.RY)
+		{
+			// Right Stick Up and Down
+			if (linearityY == 1)
+			{
+				int testValue =  (int)(data*.065+(.94*data*data)*1000);
+				System.out.println(testValue + " ," + (int)(data*1000));
+				return testValue;				
+			}
+			else 
+			{
+				return (int)(data*1000);
+			}
+		}
+		else if (id == Axis.Z)
+		{
+			// Triggers
+			return (int)(data*1000);
+		}
+		else if (id == Axis.X)
+		{
+			// Left Stick Left and Right
+			return (int)(data*1000);
+		}
+		else if (id == Axis.Y)
+		{
+			// Left Stick Up and Down
+			return (int)(data*1000);
+		}
+		return -1;
 	}
 }
