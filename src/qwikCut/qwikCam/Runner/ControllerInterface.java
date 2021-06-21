@@ -13,4 +13,6 @@ public interface ControllerInterface
 	public void setInputMap(HashMap<String, Controller> map);
 	
 	public void setLinearity(int[] setting);
+	
+	public boolean getLinearityChange();
 }

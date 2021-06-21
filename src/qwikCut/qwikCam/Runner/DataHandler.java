@@ -18,6 +18,7 @@ public class DataHandler implements ControllerInterface
 	private int linearityX = 0;
 	private int linearityY = 0;
 	private int linearityZ = 0;
+	private boolean hasRan = false;
 	
 	private int RX, RY, Z, X, Y;
 
@@ -131,11 +132,19 @@ public class DataHandler implements ControllerInterface
 		this.linearityX = setting[0];
 		this.linearityY = setting[1];
 		this.linearityZ = setting[2];
+		hasRan=true;
 		
-		System.out.println(setting[0]);
+		
+		System.out.println(setting[0] + "," + setting[1] + "," + setting[2]);
 
 		
 	}
+	@Override
+	public boolean getLinearityChange()
+	{
+		return hasRan;
+	}
+		
 	
 	private int inputMap(Identifier id, float data)
 	{
@@ -149,13 +158,9 @@ public class DataHandler implements ControllerInterface
 		{
 			if (linearityX == 1)
 			{
-				int testValue;
-				if(data<0) 
-				{
-					testValue =  (int)((data*.06+(.94*data*data*data))*-1000);
-				}
-				else
-					testValue =  (int)((data*.06+(.94*data*data*data))*1000);
+
+
+				int testValue =  (int)(Math.pow(data,3)*1000);
 				//System.out.println(testValue + " ," + (int)(data*1000));
 				return testValue;				
 			}
@@ -170,14 +175,7 @@ public class DataHandler implements ControllerInterface
 			// Right Stick Up and Down
 			if (linearityY == 1)
 			{
-				int testValue;
-				if(data<0) 
-				{
-					testValue =  (int)((data*.06+(.94*data*data))*-1000);
-				}
-				else
-					testValue =  (int)((data*.06+(.94*data*data*data))*1000);
-				
+				int testValue =  (int)(Math.pow(data,3)*1000);				
 				System.out.println(testValue + " ," + (int)(data*1000));
 				return testValue;				
 			}

@@ -66,7 +66,6 @@ public class ControllerUI
 		xMovementDrop.addItem("Exponential");
 		
 		zMovementDrop = new JComboBox();
-		zMovementDrop.setModel(new DefaultComboBoxModel(new String[] {"Linear", "Exponential"}));
 		springLayout.putConstraint(SpringLayout.EAST, zMovementDrop, 0, SpringLayout.EAST, xMovementDrop);
 		springLayout.putConstraint(SpringLayout.NORTH, zMovementDrop, -22, SpringLayout.SOUTH, zDeadzoneBtn);
 		springLayout.putConstraint(SpringLayout.WEST, zMovementDrop, 71, SpringLayout.EAST, zDeadzoneBtn);
@@ -134,11 +133,11 @@ public class ControllerUI
 			}
 			if(selectionZ.equalsIgnoreCase("Linear"))
 			{
-				selection[1]=0;
+				selection[2]=0;
 			}
 			else
 			{
-				selection[1]=1;
+				selection[2]=1;
 			}
 			ctrlInterface.setLinearity(selection);
 			

@@ -197,9 +197,11 @@ public class MainUI
 		frmQwikcamControl.getContentPane().add(cameraSettingsBtn);
 		
 		ctrlConfirm = new JButton("Confirm Controller");
+//		ctrlConfirm.setVisible(ctrlHandler.getLinearityChange());
 		springLayout.putConstraint(SpringLayout.NORTH, ctrlConfirm, 6, SpringLayout.SOUTH, ctrlSelect);
 		springLayout.putConstraint(SpringLayout.WEST, ctrlConfirm, 10, SpringLayout.WEST, frmQwikcamControl.getContentPane());
 		ctrlConfirm.addActionListener(new ActionListener()
+		
 		{
 			public void actionPerformed(ActionEvent e)
 			{
