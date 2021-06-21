@@ -149,8 +149,14 @@ public class DataHandler implements ControllerInterface
 		{
 			if (linearityX == 1)
 			{
-				int testValue =  (int)(data*.065+(.94*data*data)*1000);
-				System.out.println(testValue + " ," + (int)(data*1000));
+				int testValue;
+				if(data<0) 
+				{
+					testValue =  (int)((data*.06+(.94*data*data*data))*-1000);
+				}
+				else
+					testValue =  (int)((data*.06+(.94*data*data*data))*1000);
+				//System.out.println(testValue + " ," + (int)(data*1000));
 				return testValue;				
 			}
 			else 
@@ -164,7 +170,14 @@ public class DataHandler implements ControllerInterface
 			// Right Stick Up and Down
 			if (linearityY == 1)
 			{
-				int testValue =  (int)(data*.065+(.94*data*data)*1000);
+				int testValue;
+				if(data<0) 
+				{
+					testValue =  (int)((data*.06+(.94*data*data))*-1000);
+				}
+				else
+					testValue =  (int)((data*.06+(.94*data*data*data))*1000);
+				
 				System.out.println(testValue + " ," + (int)(data*1000));
 				return testValue;				
 			}
