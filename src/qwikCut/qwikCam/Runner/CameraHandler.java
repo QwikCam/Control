@@ -5,6 +5,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
 import org.onvif.ver10.schema.Profile;
 
 import de.onvif.soap.OnvifDevice;
@@ -93,22 +96,12 @@ public class CameraHandler implements CameraInterface
 			// steps since it may be unclear.
 			if (movementType == -1)
 			{
+				JOptionPane.showMessageDialog(new JPanel(), "The camera you attempted to connect to\nis not supported!\n\nError Code: 101");
 				return 0;
 			}
 
 			return 1;
 
-//			if (ptzDevices.isContinuosMoveSupported(profileToken))
-//			{
-//				System.out.println("Moving");
-//				ptzDevices.continuousMove(profileToken, 1f, 1f, zoom);
-//			}
-//			else
-//			{
-//				System.out.println("no move");
-//			}
-//			TimeUnit.SECONDS.sleep(1);
-//			ptzDevices.stopMove(profileToken);
 		} catch (Exception e)
 		{
 			System.out.println("Crash");

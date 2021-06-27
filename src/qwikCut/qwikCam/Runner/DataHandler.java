@@ -175,8 +175,16 @@ public class DataHandler implements ControllerInterface
 			}
 		} else if (id == Axis.Z)
 		{
-			// Triggers
-			return (int) (data * 1000);
+			// Right Stick Up and Down
+			if (linearityZ == 1)
+			{
+				int testValue = (int) (Math.pow(data, 3) * 1000);
+				System.out.println(testValue + " ," + (int) (data * 1000));
+				return testValue;
+			} else
+			{
+				return (int) (data * 1000);
+			}
 		} else if (id == Axis.X)
 		{
 			// Left Stick Left and Right
