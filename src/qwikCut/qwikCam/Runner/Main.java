@@ -13,7 +13,7 @@ public class Main
 	private static MainUI window;
 	private static CtrlHandler controller;
 	public static ControllerInterface sync = new DataHandler();
-	public static CameraInterface cameraInt = new CameraHandler();
+	public static CameraInterface cameraInt;
 
 	public static void main(String[] args)
 	{
@@ -30,8 +30,10 @@ public class Main
 		}
 
 		controller = new CtrlHandler(sync);
+		cameraInt = new CameraHandler(sync);
 		window = new MainUI(sync, cameraInt);
 		window.setCombo(controller.getList());
+		
 
 
 		// the lines commented below will get the date and time from the camera
