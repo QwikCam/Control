@@ -33,13 +33,7 @@ public class CameraHandler implements CameraInterface
 
 	// controller data
 	ControllerInterface controller;
-
-	public CameraHandler(ControllerInterface controller)
-	{
-		this.controller = controller;
-		move();
-	}
-
+	
 	// movementType variable allows for the software to know which
 	// method to run after it determines which methods are supported
 	// -1 means not set
@@ -47,6 +41,14 @@ public class CameraHandler implements CameraInterface
 	// 1 means relative
 	// 2 means continuous
 	int movementType = -1;
+	
+	String cameraInfo = null;
+
+	public CameraHandler(ControllerInterface controller)
+	{
+		this.controller = controller;
+		move();
+	}
 
 	// This method communicates with the camera to determine
 	// which movement method the camera supports.
@@ -99,6 +101,8 @@ public class CameraHandler implements CameraInterface
 				JOptionPane.showMessageDialog(new JPanel(), "The camera you attempted to connect to\nis not supported!\n\nError Code: 101");
 				return 0;
 			}
+			
+			buildCameraInfo();
 
 			return 1;
 
@@ -140,7 +144,7 @@ public class CameraHandler implements CameraInterface
 					moveContinous();
 					break;
 				default:
-					System.out.println("case default");
+//					System.out.println("case default");
 					break;
 				}
 			}
@@ -168,7 +172,7 @@ public class CameraHandler implements CameraInterface
 
 		System.out.println("Moving");
 		ptzDevices.continuousMove(profileToken, X, Y, Z);
-		
+
 		try
 		{
 			TimeUnit.SECONDS.sleep(1);
@@ -178,6 +182,24 @@ public class CameraHandler implements CameraInterface
 			e.printStackTrace();
 		}
 		ptzDevices.stopMove(profileToken);
+	}
+	
+	private void buildCameraInfo()
+	{
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("Relative movement support: " + ptzDevices.isRelativeMoveSupported(profileToken) + "\n");
+		sb.append("Absolute movement support: " + ptzDevices.isAbsoluteMoveSupported(profileToken) + "\n");
+		sb.append("Continous movement support: " + ptzDevices.isContinuosMoveSupported(profileToken) + "\n");
+		try
+		{
+			sb.append("Stream URL: \n" + camera.getMedia().getRTSPStreamUri(profileToken));
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		cameraInfo = sb.toString();
 	}
 
 	// This method fires once the cameraUI has collected the information
@@ -198,5 +220,15 @@ public class CameraHandler implements CameraInterface
 	public boolean hasConnection()
 	{
 		return validConn == 1;
+	}
+
+	// display the camera info for the main GUI
+	@Override
+	public String getCameraInfo()
+	{
+		if (cameraInfo == null)
+			return "No camera information avaliable!";
+		else
+			return cameraInfo;
 	}
 }

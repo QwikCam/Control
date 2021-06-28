@@ -6,6 +6,10 @@ import java.awt.event.ActionListener;
 import java.util.HashSet;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -34,7 +38,7 @@ public class MainUI
 	public JTextPane infoDsp;
 	public JButton cameraSettingsBtn;
 	public JButton ctrlConfirm;
-	
+
 	private ControllerInterface ctrlHandler;
 	private CameraInterface camera;
 
@@ -63,9 +67,31 @@ public class MainUI
 				frmQwikcamControl.repaint();
 			}
 		};
-		
+
 		Timer timer = new Timer();
 		timer.scheduleAtFixedRate(RX, 0, 100);
+	}
+
+	// Fill camera Information
+	// runs for one minute every 100ms after its called
+	private void updateCamera()
+	{
+		ScheduledExecutorService executor = new ScheduledThreadPoolExecutor(2);
+		ScheduledFuture<?> schedule = executor.scheduleAtFixedRate(() ->
+		{
+			if (!camera.hasConnection())
+			{
+				infoDsp.setText("No Camera connected!");
+			} else
+			{
+				infoDsp.setText(camera.getCameraInfo());
+			}
+			frmQwikcamControl.repaint();
+
+//			System.out.println("update!");
+		}, 0, 500, TimeUnit.MILLISECONDS);
+
+		executor.schedule(() -> schedule.cancel(false), 1, TimeUnit.MINUTES);
 	}
 
 	/**
@@ -75,7 +101,7 @@ public class MainUI
 	{
 		frmQwikcamControl = new JFrame();
 		frmQwikcamControl.setTitle("QwikCam Control");
-		frmQwikcamControl.setBounds(100, 100, 683, 439);
+		frmQwikcamControl.setBounds(100, 100, 836, 340);
 		frmQwikcamControl.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		SpringLayout springLayout = new SpringLayout();
 		frmQwikcamControl.getContentPane().setLayout(springLayout);
@@ -148,6 +174,9 @@ public class MainUI
 						} catch (Exception e)
 						{
 							e.printStackTrace();
+						} finally
+						{
+							updateCamera();
 						}
 					}
 				});
@@ -161,47 +190,47 @@ public class MainUI
 		frmQwikcamControl.getContentPane().add(controllerUIBtn);
 		controllerUIBtn.addActionListener(new ActionListener()
 		{
-			public void actionPerformed(ActionEvent E) 
-			{ 
+			public void actionPerformed(ActionEvent E)
+			{
 				EventQueue.invokeLater(new Runnable()
 				{
-					public void run() 
+					public void run()
 					{
 						try
 						{
 							new ControllerUI(ctrlHandler);
-							
+
 						} catch (Exception e)
 						{
 							e.printStackTrace();
 						}
 					}
-					
+
 				});
 			}
-		
+
 		});
 
 		infoDsp = new JTextPane();
 		springLayout.putConstraint(SpringLayout.NORTH, infoDsp, 28, SpringLayout.NORTH, frmQwikcamControl.getContentPane());
-		springLayout.putConstraint(SpringLayout.WEST, infoDsp, -292, SpringLayout.EAST, frmQwikcamControl.getContentPane());
+		springLayout.putConstraint(SpringLayout.WEST, infoDsp, -454, SpringLayout.EAST, frmQwikcamControl.getContentPane());
 		springLayout.putConstraint(SpringLayout.SOUTH, infoDsp, 149, SpringLayout.NORTH, frmQwikcamControl.getContentPane());
 		springLayout.putConstraint(SpringLayout.EAST, infoDsp, -31, SpringLayout.EAST, frmQwikcamControl.getContentPane());
-		infoDsp.setText("Camera Information");
+//		infoDsp.setText("Camera Information");
 		infoDsp.setEditable(false);
 		frmQwikcamControl.getContentPane().add(infoDsp);
 
 		cameraSettingsBtn = new JButton("Camera Settings");
-		springLayout.putConstraint(SpringLayout.WEST, cameraSettingsBtn, 0, SpringLayout.WEST, infoDsp);
+		springLayout.putConstraint(SpringLayout.WEST, cameraSettingsBtn, 372, SpringLayout.EAST, zoomProgressBar);
 		springLayout.putConstraint(SpringLayout.SOUTH, cameraSettingsBtn, 0, SpringLayout.SOUTH, zoomProgressBar);
 		frmQwikcamControl.getContentPane().add(cameraSettingsBtn);
-		
+
 		ctrlConfirm = new JButton("Confirm Controller");
 //		ctrlConfirm.setVisible(ctrlHandler.getLinearityChange());
 		springLayout.putConstraint(SpringLayout.NORTH, ctrlConfirm, 6, SpringLayout.SOUTH, ctrlSelect);
 		springLayout.putConstraint(SpringLayout.WEST, ctrlConfirm, 10, SpringLayout.WEST, frmQwikcamControl.getContentPane());
 		ctrlConfirm.addActionListener(new ActionListener()
-		
+
 		{
 			public void actionPerformed(ActionEvent e)
 			{
@@ -210,18 +239,17 @@ public class MainUI
 					public void run()
 					{
 						String selection = (String) ctrlSelect.getSelectedItem();
-						
+
 						// check if its a valid controller
 						if (!selection.equals("Please select from below"))
-						{						
+						{
 							if (ctrlHandler.setController(selection))
 							{
 								System.out.println("Set");
 								ctrlSelect.setEnabled(false);
 								ctrlConfirm.setEnabled(false);
 								startProb();
-							}
-							else
+							} else
 							{
 								System.out.println("Not found");
 							}
@@ -231,10 +259,10 @@ public class MainUI
 			}
 		});
 		frmQwikcamControl.getContentPane().add(ctrlConfirm);
-		
+
 		frmQwikcamControl.setVisible(true);
 	}
-	
+
 	public void setCombo(HashSet<String> list)
 	{
 		for (String s : list)
