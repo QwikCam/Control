@@ -33,7 +33,7 @@ public class CameraHandler implements CameraInterface
 
 	// controller data
 	ControllerInterface controller;
-	
+
 	// movementType variable allows for the software to know which
 	// method to run after it determines which methods are supported
 	// -1 means not set
@@ -41,8 +41,9 @@ public class CameraHandler implements CameraInterface
 	// 1 means relative
 	// 2 means continuous
 	int movementType = -1;
-	
+
 	String cameraInfo = null;
+	String cameraUri = null;
 
 	public CameraHandler(ControllerInterface controller)
 	{
@@ -101,7 +102,7 @@ public class CameraHandler implements CameraInterface
 				JOptionPane.showMessageDialog(new JPanel(), "The camera you attempted to connect to\nis not supported!\n\nError Code: 101");
 				return 0;
 			}
-			
+
 			buildCameraInfo();
 
 			return 1;
@@ -183,7 +184,7 @@ public class CameraHandler implements CameraInterface
 		}
 		ptzDevices.stopMove(profileToken);
 	}
-	
+
 	private void buildCameraInfo()
 	{
 		StringBuilder sb = new StringBuilder();
@@ -193,7 +194,8 @@ public class CameraHandler implements CameraInterface
 		sb.append("Continous movement support: " + ptzDevices.isContinuosMoveSupported(profileToken) + "\n");
 		try
 		{
-			sb.append("Stream URL: \n" + camera.getMedia().getRTSPStreamUri(profileToken));
+			cameraUri = camera.getMedia().getRTSPStreamUri(profileToken);
+			sb.append("Stream URL: \n" + cameraUri);
 		} catch (Exception e)
 		{
 			e.printStackTrace();
@@ -230,5 +232,13 @@ public class CameraHandler implements CameraInterface
 			return "No camera information avaliable!";
 		else
 			return cameraInfo;
+	}
+	
+	// used to pass the stream uri that the camera provices
+	// to the gui so it can be used to insert onto the clipboard
+	@Override
+	public String getStreamURL()
+	{
+		return cameraUri;
 	}
 }

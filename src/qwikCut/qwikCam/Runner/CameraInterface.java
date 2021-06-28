@@ -7,4 +7,6 @@ public interface CameraInterface
 	public boolean hasConnection();
 	
 	public String getCameraInfo();
+	
+	public String getStreamURL();
 }

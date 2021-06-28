@@ -1,6 +1,9 @@
 package qwikCut.qwikCam.UI;
 
 import java.awt.EventQueue;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
@@ -37,7 +40,7 @@ public class MainUI
 	public JButton controllerUIBtn;
 	public JTextPane infoDsp;
 	public JButton cameraSettingsBtn;
-	public JButton ctrlConfirm;
+	public JButton ctrlConfirm, streamUriBtn;
 
 	private ControllerInterface ctrlHandler;
 	private CameraInterface camera;
@@ -86,6 +89,12 @@ public class MainUI
 			{
 				infoDsp.setText(camera.getCameraInfo());
 			}
+			
+			if (camera.getStreamURL() != null)
+			{
+				streamUriBtn.setEnabled(true);
+			}
+			
 			frmQwikcamControl.repaint();
 
 //			System.out.println("update!");
@@ -230,7 +239,6 @@ public class MainUI
 		springLayout.putConstraint(SpringLayout.NORTH, ctrlConfirm, 6, SpringLayout.SOUTH, ctrlSelect);
 		springLayout.putConstraint(SpringLayout.WEST, ctrlConfirm, 10, SpringLayout.WEST, frmQwikcamControl.getContentPane());
 		ctrlConfirm.addActionListener(new ActionListener()
-
 		{
 			public void actionPerformed(ActionEvent e)
 			{
@@ -259,6 +267,29 @@ public class MainUI
 			}
 		});
 		frmQwikcamControl.getContentPane().add(ctrlConfirm);
+		
+		streamUriBtn = new JButton("Copy Stream URI");
+		streamUriBtn.setEnabled(false);
+		springLayout.putConstraint(SpringLayout.NORTH, streamUriBtn, 0, SpringLayout.NORTH, tiltProgressBar);
+		springLayout.putConstraint(SpringLayout.WEST, streamUriBtn, 0, SpringLayout.WEST, cameraSettingsBtn);
+		streamUriBtn.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				EventQueue.invokeLater(new Runnable()
+				{
+					public void run()
+					{
+						String uri = camera.getStreamURL();
+						StringSelection select = new StringSelection(uri);
+						Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
+						cb.setContents(select, null);
+					}
+				});
+			}
+		});
+		
+		frmQwikcamControl.getContentPane().add(streamUriBtn);
 
 		frmQwikcamControl.setVisible(true);
 	}
