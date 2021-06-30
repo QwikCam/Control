@@ -47,7 +47,9 @@ public class CameraHandler implements CameraInterface
 	String cameraUri = null;
 	
 	// Camera Speed limits
-	int pan, tilt, zoom;
+	int pan = 50;
+	int tilt = 50;
+	int zoom = 50;
 
 	public CameraHandler(ControllerInterface controller)
 	{
@@ -172,16 +174,16 @@ public class CameraHandler implements CameraInterface
 
 	private void moveContinous()
 	{
-		float X = (controller.readController(2) / 1000f)/pan;
-		float Y = (controller.readController(4) / 1000f)/tilt;
-		float Z = (controller.readController(3) / 1000f)/zoom;
+		float X = (controller.readController(4) / 1000f)*(pan/100f);
+		float Y = (controller.readController(2) / 1000f)*(tilt/100f);
+		float Z = (controller.readController(3) / 1000f)*(zoom/100f);
 
-		System.out.println("Moving");
+		System.out.println("Moving, X: " + X + ", Y: " + Y + ", Z: " + Z);
 		ptzDevices.continuousMove(profileToken, X, Y, Z);
 
 		try
 		{
-			TimeUnit.SECONDS.sleep(1);
+			TimeUnit.MILLISECONDS.sleep(100);
 		} catch (InterruptedException e)
 		{
 			e.printStackTrace();

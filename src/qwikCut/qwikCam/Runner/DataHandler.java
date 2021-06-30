@@ -19,6 +19,7 @@ public class DataHandler implements ControllerInterface
 	private int linearityY = 0;
 	private int linearityZ = 0;
 	private boolean hasRan = false;
+	private float zone = 0;
 
 	private int RX, RY, Z, X, Y;
 
@@ -98,7 +99,7 @@ public class DataHandler implements ControllerInterface
 					} else if (id == Axis.RY)
 					{
 						// Right Stick Up and Down
-						RY = inputMap(id, data);
+						RY = inputMap(id, -1*data);
 					} else if (id == Axis.Z)
 					{
 						// Triggers
@@ -139,26 +140,33 @@ public class DataHandler implements ControllerInterface
 	{
 		return hasRan;
 	}
+	
+	@Override
+	public void setDeadzone(int zone)
+	{
+		// zone 0-100 -> 0-1
+		// data 0-1
+		this.zone = zone/100f;
+	}
 
 	private int inputMap(Identifier id, float data)
 	{
-
-		// Right Stick Left and Right
-
-		// this line is where we apply our input map
-		// for example: RX = inputMap(RX, data)
-
 		if (id == Axis.RX)
 		{
 			if (linearityX == 1)
 			{
 
 				int testValue = (int) (Math.pow(data, 3) * 1000);
-				// System.out.println(testValue + " ," + (int)(data*1000));
-				return testValue;
+				if (Math.abs(data) < zone)
+					return 0;
+				else
+					return testValue;
 			} else
 			{
-				return (int) (data * 1000);
+				if (Math.abs(data) < zone)
+					return 0;
+				else
+					return (int) (data * 1000);
 			}
 
 		} else if (id == Axis.RY)
@@ -167,11 +175,16 @@ public class DataHandler implements ControllerInterface
 			if (linearityY == 1)
 			{
 				int testValue = (int) (Math.pow(data, 3) * 1000);
-				System.out.println(testValue + " ," + (int) (data * 1000));
-				return testValue;
+				if (Math.abs(data) < zone)
+					return 0;
+				else
+					return testValue;
 			} else
 			{
-				return (int) (data * 1000);
+				if (Math.abs(data) < zone)
+					return 0;
+				else
+					return (int) (data * 1000);
 			}
 		} else if (id == Axis.Z)
 		{
@@ -179,20 +192,51 @@ public class DataHandler implements ControllerInterface
 			if (linearityZ == 1)
 			{
 				int testValue = (int) (Math.pow(data, 3) * 1000);
-				System.out.println(testValue + " ," + (int) (data * 1000));
-				return testValue;
+				if (Math.abs(data) < zone)
+					return 0;
+				else
+					return testValue;
 			} else
 			{
-				return (int) (data * 1000);
+				if (Math.abs(data) < zone)
+					return 0;
+				else
+					return (int) (data * 1000);
 			}
 		} else if (id == Axis.X)
 		{
-			// Left Stick Left and Right
-			return (int) (data * 1000);
+			// Right Stick Up and Down
+			if (linearityX == 1)
+			{
+				int testValue = (int) (Math.pow(data, 3) * 1000);
+				if (Math.abs(data) < zone)
+					return 0;
+				else
+					return testValue;
+			} else
+			{
+				if (Math.abs(data) < zone)
+					return 0;
+				else
+					return (int) (data * 1000);
+			}
 		} else if (id == Axis.Y)
 		{
-			// Left Stick Up and Down
-			return (int) (data * 1000);
+			// Right Stick Up and Down
+			if (linearityY == 1)
+			{
+				int testValue = (int) (Math.pow(data, 3) * 1000);
+				if (Math.abs(data) < zone)
+					return 0;
+				else
+					return testValue;
+			} else
+			{
+				if (Math.abs(data) < zone)
+					return 0;
+				else
+					return (int) (data * 1000);
+			}
 		}
 		return -1;
 	}

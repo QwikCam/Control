@@ -15,4 +15,6 @@ public interface ControllerInterface
 	public void setLinearity(int[] setting);
 	
 	public boolean getLinearityChange();
+	
+	public void setDeadzone(int zone);
 }

@@ -23,6 +23,7 @@ public class ControllerUI
 	private JComboBox<String> xMovementDrop, yMovementDrop, zMovementDrop;
 
 	private JFrame frame;
+	private JSlider slider;
 
 	/**
 	 * Create the application.
@@ -89,7 +90,11 @@ public class ControllerUI
 		springLayout.putConstraint(SpringLayout.EAST, closeBtn, -24, SpringLayout.WEST, cancelBtn);
 		frame.getContentPane().add(closeBtn);
 		
-		JSlider slider = new JSlider();
+		slider = new JSlider();
+		slider.setMinorTickSpacing(2);
+		slider.setMajorTickSpacing(10);
+		slider.setPaintTicks(true);
+		slider.setPaintLabels(true);
 		slider.setValue(0);
 		springLayout.putConstraint(SpringLayout.NORTH, slider, 14, SpringLayout.NORTH, yMovementDrop);
 		springLayout.putConstraint(SpringLayout.EAST, slider, -89, SpringLayout.EAST, frame.getContentPane());
@@ -140,6 +145,8 @@ public class ControllerUI
 				selection[2] = 1;
 			}
 			ctrlInterface.setLinearity(selection);
+			System.out.println(slider.getValue());
+			ctrlInterface.setDeadzone(slider.getValue());
 
 			frame.dispose();
 		}

@@ -242,8 +242,9 @@ public class MainUI
 					{
 						try
 						{
-							if (!camera.hasConnection())
+//							if (!camera.hasConnection())
 								new CameraSettingUI(camera);
+//								System.out.println("test");
 						} catch (Exception e)
 						{
 							e.printStackTrace();

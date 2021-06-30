@@ -26,8 +26,9 @@ public class CameraSettingUI
 	 */
 	public CameraSettingUI(CameraInterface camera)
 	{
-		this.camera = camera;
 		initialize();
+		this.camera = camera;
+		frame.setVisible(true);
 	}
 
 	/**
@@ -37,7 +38,7 @@ public class CameraSettingUI
 	{
 		frame = new JFrame();
 		frame.setBounds(100, 100, 306, 331);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		SpringLayout springLayout = new SpringLayout();
 		frame.getContentPane().setLayout(springLayout);
 		
