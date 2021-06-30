@@ -109,6 +109,7 @@ public class CameraHandler implements CameraInterface
 
 		} catch (Exception e)
 		{
+			JOptionPane.showMessageDialog(new JPanel(), e.getMessage());
 			System.out.println("Crash");
 			e.printStackTrace();
 			return 0;
@@ -179,7 +180,6 @@ public class CameraHandler implements CameraInterface
 			TimeUnit.SECONDS.sleep(1);
 		} catch (InterruptedException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		ptzDevices.stopMove(profileToken);
@@ -213,6 +213,8 @@ public class CameraHandler implements CameraInterface
 		this.username = user;
 		this.password = pass;
 
+//		System.out.println(pass);
+
 		return connectCamera();
 	}
 
@@ -233,7 +235,7 @@ public class CameraHandler implements CameraInterface
 		else
 			return cameraInfo;
 	}
-	
+
 	// used to pass the stream uri that the camera provices
 	// to the gui so it can be used to insert onto the clipboard
 	@Override
