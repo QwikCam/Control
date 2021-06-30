@@ -232,6 +232,29 @@ public class MainUI
 		cameraSettingsBtn = new JButton("Camera Settings");
 		springLayout.putConstraint(SpringLayout.WEST, cameraSettingsBtn, 372, SpringLayout.EAST, zoomProgressBar);
 		springLayout.putConstraint(SpringLayout.SOUTH, cameraSettingsBtn, 0, SpringLayout.SOUTH, zoomProgressBar);
+		cameraSettingsBtn.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				EventQueue.invokeLater(new Runnable()
+				{
+					public void run()
+					{
+						try
+						{
+							if (!camera.hasConnection())
+								new CameraSettingUI(camera);
+						} catch (Exception e)
+						{
+							e.printStackTrace();
+						} finally
+						{
+							updateCamera();
+						}
+					}
+				});
+			}
+		});
 		frmQwikcamControl.getContentPane().add(cameraSettingsBtn);
 
 		ctrlConfirm = new JButton("Confirm Controller");

@@ -42,8 +42,12 @@ public class CameraHandler implements CameraInterface
 	// 2 means continuous
 	int movementType = -1;
 
+	// Camera information for GUI
 	String cameraInfo = null;
 	String cameraUri = null;
+	
+	// Camera Speed limits
+	int pan, tilt, zoom;
 
 	public CameraHandler(ControllerInterface controller)
 	{
@@ -168,9 +172,9 @@ public class CameraHandler implements CameraInterface
 
 	private void moveContinous()
 	{
-		float X = controller.readController(2) / 1000f;
-		float Y = controller.readController(4) / 1000f;
-		float Z = controller.readController(3) / 1000f;
+		float X = (controller.readController(2) / 1000f)/pan;
+		float Y = (controller.readController(4) / 1000f)/tilt;
+		float Z = (controller.readController(3) / 1000f)/zoom;
 
 		System.out.println("Moving");
 		ptzDevices.continuousMove(profileToken, X, Y, Z);
@@ -242,5 +246,13 @@ public class CameraHandler implements CameraInterface
 	public String getStreamURL()
 	{
 		return cameraUri;
+	}
+	
+	@Override
+	public void setSpeedLimits(int pan, int tilt, int zoom)
+	{
+		this.pan = pan;
+		this.tilt = tilt;
+		this.zoom = zoom;
 	}
 }
