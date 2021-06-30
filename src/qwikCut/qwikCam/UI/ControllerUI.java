@@ -12,6 +12,9 @@ import javax.swing.JFrame;
 import javax.swing.SpringLayout;
 
 import qwikCut.qwikCam.Runner.ControllerInterface;
+import javax.swing.JSlider;
+import javax.swing.JLabel;
+import java.awt.Font;
 
 public class ControllerUI
 {
@@ -43,34 +46,18 @@ public class ControllerUI
 		SpringLayout springLayout = new SpringLayout();
 		frame.getContentPane().setLayout(springLayout);
 
-		JButton xDeadzoneBtn = new JButton("Set Deadzone");
-		springLayout.putConstraint(SpringLayout.NORTH, xDeadzoneBtn, 44, SpringLayout.NORTH, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.WEST, xDeadzoneBtn, 66, SpringLayout.WEST, frame.getContentPane());
-		frame.getContentPane().add(xDeadzoneBtn);
-
-		JButton yDeadzoneBtn = new JButton("Set Deadzone");
-		springLayout.putConstraint(SpringLayout.WEST, yDeadzoneBtn, 0, SpringLayout.WEST, xDeadzoneBtn);
-		springLayout.putConstraint(SpringLayout.SOUTH, yDeadzoneBtn, -124, SpringLayout.SOUTH, frame.getContentPane());
-		frame.getContentPane().add(yDeadzoneBtn);
-
-		JButton zDeadzoneBtn = new JButton("Set Deadzone");
-		springLayout.putConstraint(SpringLayout.NORTH, zDeadzoneBtn, 35, SpringLayout.SOUTH, yDeadzoneBtn);
-		springLayout.putConstraint(SpringLayout.WEST, zDeadzoneBtn, 0, SpringLayout.WEST, xDeadzoneBtn);
-		frame.getContentPane().add(zDeadzoneBtn);
-
 		xMovementDrop = new JComboBox<String>();
-		springLayout.putConstraint(SpringLayout.NORTH, xMovementDrop, 44, SpringLayout.NORTH, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.WEST, xMovementDrop, 71, SpringLayout.EAST, xDeadzoneBtn);
-		springLayout.putConstraint(SpringLayout.EAST, xMovementDrop, -169, SpringLayout.EAST, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.NORTH, xMovementDrop, 45, SpringLayout.NORTH, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.WEST, xMovementDrop, 10, SpringLayout.WEST, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.EAST, xMovementDrop, -395, SpringLayout.EAST, frame.getContentPane());
 		frame.getContentPane().add(xMovementDrop);
 		xMovementDrop.addItem("Linear");
 		xMovementDrop.addItem("Exponential");
 
 		zMovementDrop = new JComboBox<String>();
+		springLayout.putConstraint(SpringLayout.WEST, zMovementDrop, 10, SpringLayout.WEST, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.SOUTH, zMovementDrop, -77, SpringLayout.SOUTH, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.EAST, zMovementDrop, 0, SpringLayout.EAST, xMovementDrop);
-		springLayout.putConstraint(SpringLayout.NORTH, zMovementDrop, -22, SpringLayout.SOUTH, zDeadzoneBtn);
-		springLayout.putConstraint(SpringLayout.WEST, zMovementDrop, 71, SpringLayout.EAST, zDeadzoneBtn);
-		springLayout.putConstraint(SpringLayout.SOUTH, zMovementDrop, 0, SpringLayout.SOUTH, zDeadzoneBtn);
 		frame.getContentPane().add(zMovementDrop);
 		zMovementDrop.addItem("Linear");
 		zMovementDrop.addItem("Exponential");
@@ -89,10 +76,11 @@ public class ControllerUI
 		});
 
 		yMovementDrop = new JComboBox<String>();
-		yMovementDrop.setModel(new DefaultComboBoxModel<String>(new String[] { "Linear", "Exponential" }));
-		springLayout.putConstraint(SpringLayout.NORTH, yMovementDrop, 0, SpringLayout.NORTH, yDeadzoneBtn);
-		springLayout.putConstraint(SpringLayout.WEST, yMovementDrop, 0, SpringLayout.WEST, xMovementDrop);
+		springLayout.putConstraint(SpringLayout.NORTH, yMovementDrop, 103, SpringLayout.NORTH, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.NORTH, zMovementDrop, 39, SpringLayout.SOUTH, yMovementDrop);
+		springLayout.putConstraint(SpringLayout.WEST, yMovementDrop, 10, SpringLayout.WEST, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.EAST, yMovementDrop, 0, SpringLayout.EAST, xMovementDrop);
+		yMovementDrop.setModel(new DefaultComboBoxModel<String>(new String[] { "Linear", "Exponential" }));
 		frame.getContentPane().add(yMovementDrop);
 
 		JButton closeBtn = new JButton("Confirm & Close");
@@ -100,6 +88,18 @@ public class ControllerUI
 		springLayout.putConstraint(SpringLayout.SOUTH, closeBtn, 0, SpringLayout.SOUTH, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.EAST, closeBtn, -24, SpringLayout.WEST, cancelBtn);
 		frame.getContentPane().add(closeBtn);
+		
+		JSlider slider = new JSlider();
+		slider.setValue(0);
+		springLayout.putConstraint(SpringLayout.NORTH, slider, 14, SpringLayout.NORTH, yMovementDrop);
+		springLayout.putConstraint(SpringLayout.EAST, slider, -89, SpringLayout.EAST, frame.getContentPane());
+		frame.getContentPane().add(slider);
+		
+		JLabel lblNewLabel = new JLabel("Deadzone Sensitivity");
+		springLayout.putConstraint(SpringLayout.SOUTH, lblNewLabel, -15, SpringLayout.NORTH, slider);
+		springLayout.putConstraint(SpringLayout.EAST, lblNewLabel, -141, SpringLayout.EAST, frame.getContentPane());
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		frame.getContentPane().add(lblNewLabel);
 
 	}
 
