@@ -142,15 +142,15 @@ public class CameraHandler implements CameraInterface
 				switch (movementType)
 				{
 				case 0:
-					System.out.println("case 0");
+//					System.out.println("case 0");
 					moveAbsolute();
 					break;
 				case 1:
-					System.out.println("case 1");
+//					System.out.println("case 1");
 					moveRelative();
 					break;
 				case 2:
-					System.out.println("case 2");
+//					System.out.println("case 2");
 					moveContinous();
 					break;
 				default:
@@ -184,9 +184,19 @@ public class CameraHandler implements CameraInterface
 		float deltaY = Math.abs(Y - lastY);
 		float deltaZ = Math.abs(Z - lastZ);
 		
+//		System.out.println("Moving, dX: " + deltaX + ", dY: " + deltaY + ", dZ: " + deltaZ);
+		
 		if (deltaX > 0.1 || deltaY > .01 || deltaZ > 0.1)
 		{
 			ptzDevices.continuousMove(profileToken, X, Y, Z);
+			lastX = X;
+			lastY = Y;
+			lastZ = Z;
+		}
+		
+		if (X == 0f && Y == 0f && Z == 0f)
+		{
+			ptzDevices.stopMove(profileToken);
 		}
 
 //		System.out.println("Moving, X: " + X + ", Y: " + Y + ", Z: " + Z);
