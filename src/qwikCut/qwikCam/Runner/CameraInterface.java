@@ -11,4 +11,6 @@ public interface CameraInterface
 	public String getStreamURL();
 	
 	public void setSpeedLimits(int pan, int tilt, int zoon);
+	
+	public void close();
 }

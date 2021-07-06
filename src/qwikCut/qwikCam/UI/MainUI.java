@@ -18,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.JTextPane;
 import javax.swing.SpringLayout;
@@ -312,8 +313,23 @@ public class MainUI
 				});
 			}
 		});
-		
 		frmQwikcamControl.getContentPane().add(streamUriBtn);
+		
+		frmQwikcamControl.addWindowListener(new java.awt.event.WindowAdapter() 
+		{
+		    @Override
+		    public void windowClosing(java.awt.event.WindowEvent windowEvent) 
+		    {
+		        if (JOptionPane.showConfirmDialog(frmQwikcamControl, 
+		            "Are you sure you want to close this window?", "Close Window?", 
+		            JOptionPane.YES_NO_OPTION,
+		            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION)
+		        {
+		        	camera.close();
+		            System.exit(0);
+		        }
+		    }
+		});
 
 		frmQwikcamControl.setVisible(true);
 	}

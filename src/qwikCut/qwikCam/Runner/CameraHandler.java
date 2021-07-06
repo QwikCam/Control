@@ -3,7 +3,6 @@ package qwikCut.qwikCam.Runner;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -33,6 +32,9 @@ public class CameraHandler implements CameraInterface
 
 	// controller data
 	ControllerInterface controller;
+	float lastX = 0f;
+	float lastY = 0f;
+	float lastZ = 0f;
 
 	// movementType variable allows for the software to know which
 	// method to run after it determines which methods are supported
@@ -177,18 +179,27 @@ public class CameraHandler implements CameraInterface
 		float X = (controller.readController(4) / 1000f)*(pan/100f);
 		float Y = (controller.readController(2) / 1000f)*(tilt/100f);
 		float Z = (controller.readController(3) / 1000f)*(zoom/100f);
-
-		System.out.println("Moving, X: " + X + ", Y: " + Y + ", Z: " + Z);
-		ptzDevices.continuousMove(profileToken, X, Y, Z);
-
-		try
+		
+		float deltaX = Math.abs(X - lastX);
+		float deltaY = Math.abs(Y - lastY);
+		float deltaZ = Math.abs(Z - lastZ);
+		
+		if (deltaX > 0.1 || deltaY > .01 || deltaZ > 0.1)
 		{
-			TimeUnit.MILLISECONDS.sleep(100);
-		} catch (InterruptedException e)
-		{
-			e.printStackTrace();
+			ptzDevices.continuousMove(profileToken, X, Y, Z);
 		}
-		ptzDevices.stopMove(profileToken);
+
+//		System.out.println("Moving, X: " + X + ", Y: " + Y + ", Z: " + Z);
+//		ptzDevices.continuousMove(profileToken, X, Y, Z);
+//
+//		try
+//		{
+//			TimeUnit.MILLISECONDS.sleep(100);
+//		} catch (InterruptedException e)
+//		{
+//			e.printStackTrace();
+//		}
+//		ptzDevices.stopMove(profileToken);
 	}
 
 	private void buildCameraInfo()
@@ -256,5 +267,11 @@ public class CameraHandler implements CameraInterface
 		this.pan = pan;
 		this.tilt = tilt;
 		this.zoom = zoom;
+	}
+	
+	@Override
+	public void close()
+	{
+		ptzDevices.stopMove(profileToken);
 	}
 }
