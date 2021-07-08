@@ -20,14 +20,17 @@ public class CameraSettingUI
 
 	private JFrame frame;
 	private JSlider panSlider, tiltSlider, zoomSlider;
+	
+	private int[] speedLimits;
 
 	/**
 	 * Create the application.
 	 */
 	public CameraSettingUI(CameraInterface camera)
 	{
-		initialize();
 		this.camera = camera;
+		this.speedLimits = camera.getSpeedLimits();
+		initialize();
 		frame.setVisible(true);
 	}
 
@@ -43,7 +46,7 @@ public class CameraSettingUI
 		frame.getContentPane().setLayout(springLayout);
 		
 		panSlider = new JSlider();
-		panSlider.setValue(100);
+		panSlider.setValue(speedLimits[0]);
 		panSlider.setToolTipText("Pan speed limit");
 		springLayout.putConstraint(SpringLayout.NORTH, panSlider, 43, SpringLayout.NORTH, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.WEST, panSlider, 21, SpringLayout.WEST, frame.getContentPane());
@@ -64,7 +67,7 @@ public class CameraSettingUI
 		springLayout.putConstraint(SpringLayout.SOUTH, tiltLabel, -6, SpringLayout.NORTH, tiltSlider);
 		springLayout.putConstraint(SpringLayout.NORTH, tiltSlider, 40, SpringLayout.SOUTH, panSlider);
 		springLayout.putConstraint(SpringLayout.WEST, tiltSlider, 0, SpringLayout.WEST, panSlider);
-		tiltSlider.setValue(100);
+		tiltSlider.setValue(speedLimits[1]);
 		tiltSlider.setToolTipText("Tilt speed limit");
 		frame.getContentPane().add(tiltSlider);
 		
@@ -77,7 +80,7 @@ public class CameraSettingUI
 		zoomSlider = new JSlider();
 		springLayout.putConstraint(SpringLayout.NORTH, zoomSlider, 17, SpringLayout.SOUTH, zoomLabel);
 		springLayout.putConstraint(SpringLayout.EAST, zoomSlider, 0, SpringLayout.EAST, panSlider);
-		zoomSlider.setValue(100);
+		zoomSlider.setValue(speedLimits[2]);
 		zoomSlider.setToolTipText("Zoom speed limit");
 		frame.getContentPane().add(zoomSlider);
 		

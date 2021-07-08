@@ -98,7 +98,6 @@ public class MainUI
 			
 			frmQwikcamControl.repaint();
 
-//			System.out.println("update!");
 		}, 0, 500, TimeUnit.MILLISECONDS);
 
 		executor.schedule(() -> schedule.cancel(false), 1, TimeUnit.MINUTES);
@@ -226,7 +225,6 @@ public class MainUI
 		springLayout.putConstraint(SpringLayout.WEST, infoDsp, -454, SpringLayout.EAST, frmQwikcamControl.getContentPane());
 		springLayout.putConstraint(SpringLayout.SOUTH, infoDsp, 149, SpringLayout.NORTH, frmQwikcamControl.getContentPane());
 		springLayout.putConstraint(SpringLayout.EAST, infoDsp, -31, SpringLayout.EAST, frmQwikcamControl.getContentPane());
-//		infoDsp.setText("Camera Information");
 		infoDsp.setEditable(false);
 		frmQwikcamControl.getContentPane().add(infoDsp);
 

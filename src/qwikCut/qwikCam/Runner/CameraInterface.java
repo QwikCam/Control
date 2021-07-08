@@ -13,4 +13,6 @@ public interface CameraInterface
 	public void setSpeedLimits(int pan, int tilt, int zoon);
 	
 	public void close();
+	
+	public int[] getSpeedLimits();
 }

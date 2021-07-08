@@ -22,6 +22,8 @@ public class CtrlHandler
 		dataHandler.setInputMap(ctrlMap);
 	}
 
+	// filters all USB devices out to only list gamepad controller and formats a hashmap
+	// to store the friendly name and controller object for the UI and other logic.
 	private void init()
 	{
 		Controller[] all = ControllerEnvironment.getDefaultEnvironment().getControllers();

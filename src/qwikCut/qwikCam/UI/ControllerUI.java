@@ -77,7 +77,6 @@ public class ControllerUI
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-//				System.out.println("test");
 				frame.dispose();
 			}
 		});
@@ -113,8 +112,6 @@ public class ControllerUI
 		springLayout.putConstraint(SpringLayout.EAST, lblNewLabel, -141, SpringLayout.EAST, frame.getContentPane());
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		frame.getContentPane().add(lblNewLabel);
-		
-//		setValues();
 	}
 
 	@SuppressWarnings("serial")

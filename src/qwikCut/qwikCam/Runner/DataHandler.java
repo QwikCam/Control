@@ -23,51 +23,6 @@ public class DataHandler implements ControllerInterface
 
 	private int RX, RY, Z, X, Y;
 
-	@Override
-	public boolean setController(String ctrl)
-	{
-		Controller selection = map.get(ctrl);
-
-		if (selection == null)
-			return false;
-
-		this.ctrl = selection;
-
-//		for (Component c : this.ctrl.getComponents())
-//		{
-//			System.out.println(c.getName());
-//		}
-
-		pollController();
-		return true;
-	}
-
-	@Override
-	public int readController(int axis)
-	{
-		switch (axis)
-		{
-		case 1:
-			return RX;
-		case 2:
-			return RY;
-		case 3:
-			return Z;
-		case 4:
-			return X;
-		case 5:
-			return Y;
-		default:
-			return 0;
-		}
-	}
-
-	@Override
-	public void setInputMap(HashMap<String, Controller> map)
-	{
-		this.map = map;
-	}
-
 	// reads the values from the controller
 	// stores the axis data to variables for other methods to read
 	private void pollController()
@@ -92,9 +47,6 @@ public class DataHandler implements ControllerInterface
 					if (id == Axis.RX)
 					{
 						// Right Stick Left and Right
-
-						// this line is where we apply our input map
-						// for example: RX = inputMap(RX, data)
 						RX = inputMap(id, data);
 					} else if (id == Axis.RY)
 					{
@@ -121,51 +73,10 @@ public class DataHandler implements ControllerInterface
 		Timer timer = new Timer();
 		timer.scheduleAtFixedRate(tx, 0, 10);
 	}
-
-	@Override
-	public void setLinearity(int[] setting)
-	{
-		// linear = 0
-		this.linearityX = setting[0];
-		this.linearityY = setting[1];
-		this.linearityZ = setting[2];
-		hasRan = true;
-
-		System.out.println(setting[0] + "," + setting[1] + "," + setting[2]);
-
-	}
 	
-	@Override
-	public int[] getLinearity()
-	{
-		int[] retval = new int[3];
-		retval[0] = this.linearityX;
-		retval[1] = this.linearityY;
-		retval[2] = this.linearityZ;
-		
-		return retval;
-	}
-
-	@Override
-	public boolean getLinearityChange()
-	{
-		return hasRan;
-	}
-	
-	@Override
-	public void setDeadzone(int zone)
-	{
-		// zone 0-100 -> 0-1
-		// data 0-1
-		this.zone = zone/100f;
-	}
-	
-	@Override
-	public int getDeadzone()
-	{
-		return (int)(this.zone*100);
-	}
-
+	// Given user linearity setting map the -1 to 1 float data to 0 to 1000 int data
+	// that will be used through the program. Also apply the math to allow for an
+	// exponential controller input curve.
 	private int inputMap(Identifier id, float data)
 	{
 		if (id == Axis.RX)
@@ -257,4 +168,96 @@ public class DataHandler implements ControllerInterface
 		}
 		return -1;
 	}
+	
+	// Sets the controller to be read for input
+	// returns true if no errors happen.
+	@Override
+	public boolean setController(String ctrl)
+	{
+		Controller selection = map.get(ctrl);
+
+		if (selection == null)
+			return false;
+
+		this.ctrl = selection;
+
+		pollController();
+		return true;
+	}
+
+	// reads the last recorded value for an axis and returns it
+	@Override
+	public int readController(int axis)
+	{
+		switch (axis)
+		{
+		case 1:
+			return RX;
+		case 2:
+			return RY;
+		case 3:
+			return Z;
+		case 4:
+			return X;
+		case 5:
+			return Y;
+		default:
+			return 0;
+		}
+	}
+
+	// sets the map between controller name and controller object
+	@Override
+	public void setInputMap(HashMap<String, Controller> map)
+	{
+		this.map = map;
+	}
+
+	// set the use specified linearity setting for the input map
+	@Override
+	public void setLinearity(int[] setting)
+	{
+		// linear = 0
+		this.linearityX = setting[0];
+		this.linearityY = setting[1];
+		this.linearityZ = setting[2];
+		hasRan = true;
+	}
+	
+	// gets the last linearity setting
+	@Override
+	public int[] getLinearity()
+	{
+		int[] retval = new int[3];
+		retval[0] = this.linearityX;
+		retval[1] = this.linearityY;
+		retval[2] = this.linearityZ;
+		
+		return retval;
+	}
+
+	// tells the software if the user has modified any linearity settings
+	@Override
+	public boolean getLinearityChange()
+	{
+		return hasRan;
+	}
+	
+	// tells the software what range of inputs to ignore to prevent a sloppy
+	// controller driving the input without the user demanding input
+	@Override
+	public void setDeadzone(int zone)
+	{
+		// zone 0-100 -> 0-1
+		// data 0-1
+		this.zone = zone/100f;
+	}
+	
+	// returns the deadzone value that was set
+	@Override
+	public int getDeadzone()
+	{
+		return (int)(this.zone*100);
+	}
+
 }

@@ -134,27 +134,18 @@ public class CameraHandler implements CameraInterface
 			@Override
 			public void run()
 			{
-				// -1 means not set
-				// 0 means absolute
-				// 1 means relative
-				// 2 means continuous
-//				int movementType = -1;
 				switch (movementType)
 				{
 				case 0:
-//					System.out.println("case 0");
 					moveAbsolute();
 					break;
 				case 1:
-//					System.out.println("case 1");
 					moveRelative();
 					break;
 				case 2:
-//					System.out.println("case 2");
 					moveContinous();
 					break;
 				default:
-//					System.out.println("case default");
 					break;
 				}
 			}
@@ -176,17 +167,19 @@ public class CameraHandler implements CameraInterface
 
 	private void moveContinous()
 	{
+		// get the current controller inputs scaled by the speed
 		float X = (controller.readController(4) / 1000f)*(pan/100f);
 		float Y = (controller.readController(2) / 1000f)*(tilt/100f);
 		float Z = (controller.readController(3) / 1000f)*(zoom/100f);
 		
+		// calculate how much the controller input changed from the last check
 		float deltaX = Math.abs(X - lastX);
 		float deltaY = Math.abs(Y - lastY);
 		float deltaZ = Math.abs(Z - lastZ);
 		
-//		System.out.println("Moving, dX: " + deltaX + ", dY: " + deltaY + ", dZ: " + deltaZ);
-		
-		if (deltaX > 0.1 || deltaY > .01 || deltaZ > 0.1)
+		// If any of the directions have changed more then a threashold tell the camera
+		// to move in the new direction then save the last inputs for the next check
+		if (deltaX > 0.05 || deltaY > .05 || deltaZ > 0.05)
 		{
 			ptzDevices.continuousMove(profileToken, X, Y, Z);
 			lastX = X;
@@ -194,31 +187,26 @@ public class CameraHandler implements CameraInterface
 			lastZ = Z;
 		}
 		
+		// if all the inputs are zero tell the camera to stop moving
 		if (X == 0f && Y == 0f && Z == 0f)
 		{
 			ptzDevices.stopMove(profileToken);
 		}
-
-//		System.out.println("Moving, X: " + X + ", Y: " + Y + ", Z: " + Z);
-//		ptzDevices.continuousMove(profileToken, X, Y, Z);
-//
-//		try
-//		{
-//			TimeUnit.MILLISECONDS.sleep(100);
-//		} catch (InterruptedException e)
-//		{
-//			e.printStackTrace();
-//		}
-//		ptzDevices.stopMove(profileToken);
 	}
 
+	// Get all useful information from the camera to aid in the operation of the camera
+	// formatted to be readable.
 	private void buildCameraInfo()
 	{
 		StringBuilder sb = new StringBuilder();
 
+		// Determine which movement types are supported with the order determining which one is used if multiple are supported
+		sb.append("All possible movement types sorted by priority of use:");
 		sb.append("Relative movement support: " + ptzDevices.isRelativeMoveSupported(profileToken) + "\n");
 		sb.append("Absolute movement support: " + ptzDevices.isAbsoluteMoveSupported(profileToken) + "\n");
 		sb.append("Continous movement support: " + ptzDevices.isContinuosMoveSupported(profileToken) + "\n");
+		
+		// ask the camera for the main stream URI and display it
 		try
 		{
 			cameraUri = camera.getMedia().getRTSPStreamUri(profileToken);
@@ -239,8 +227,6 @@ public class CameraHandler implements CameraInterface
 		this.ip = ip;
 		this.username = user;
 		this.password = pass;
-
-//		System.out.println(pass);
 
 		return connectCamera();
 	}
@@ -271,6 +257,7 @@ public class CameraHandler implements CameraInterface
 		return cameraUri;
 	}
 	
+	// collect the user set maximum camera speed
 	@Override
 	public void setSpeedLimits(int pan, int tilt, int zoom)
 	{
@@ -279,9 +266,26 @@ public class CameraHandler implements CameraInterface
 		this.zoom = zoom;
 	}
 	
+	// This method is incomplete since not all movement types have code
+	// The goal of this method is to make sure the camera is stopped before the
+	// software releases control since there is no disconnect method.
 	@Override
 	public void close()
 	{
 		ptzDevices.stopMove(profileToken);
+	}
+	
+	// Pass the speed limit values back when called to allow for the UI
+	// to display what was set prior for easier adjustments.
+	@Override
+	public int[] getSpeedLimits()
+	{
+		int[] retval = new int[3];
+		
+		retval[0] = pan;
+		retval[1] = tilt;
+		retval[2] = zoom;
+		
+		return retval;
 	}
 }
