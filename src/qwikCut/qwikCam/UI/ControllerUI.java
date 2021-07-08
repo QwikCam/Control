@@ -24,6 +24,9 @@ public class ControllerUI
 
 	private JFrame frame;
 	private JSlider slider;
+	
+	private int[] readLinearity;
+	private int readDeadzone;
 
 	/**
 	 * Create the application.
@@ -31,9 +34,10 @@ public class ControllerUI
 	public ControllerUI(ControllerInterface ctrlInterface)
 	{
 		this.ctrlInterface = ctrlInterface;
+		this.readLinearity = ctrlInterface.getLinearity();
+		this.readDeadzone = ctrlInterface.getDeadzone();
 		initialize();
 		frame.setVisible(true);
-
 	}
 
 	/**
@@ -54,6 +58,7 @@ public class ControllerUI
 		frame.getContentPane().add(xMovementDrop);
 		xMovementDrop.addItem("Linear");
 		xMovementDrop.addItem("Exponential");
+		xMovementDrop.setSelectedIndex(readLinearity[0]);
 
 		zMovementDrop = new JComboBox<String>();
 		springLayout.putConstraint(SpringLayout.WEST, zMovementDrop, 10, SpringLayout.WEST, frame.getContentPane());
@@ -62,6 +67,7 @@ public class ControllerUI
 		frame.getContentPane().add(zMovementDrop);
 		zMovementDrop.addItem("Linear");
 		zMovementDrop.addItem("Exponential");
+		zMovementDrop.setSelectedIndex(readLinearity[2]);
 
 		JButton cancelBtn = new JButton("Cancel");
 		springLayout.putConstraint(SpringLayout.SOUTH, cancelBtn, 0, SpringLayout.SOUTH, frame.getContentPane());
@@ -83,6 +89,7 @@ public class ControllerUI
 		springLayout.putConstraint(SpringLayout.EAST, yMovementDrop, 0, SpringLayout.EAST, xMovementDrop);
 		yMovementDrop.setModel(new DefaultComboBoxModel<String>(new String[] { "Linear", "Exponential" }));
 		frame.getContentPane().add(yMovementDrop);
+		yMovementDrop.setSelectedIndex(readLinearity[1]);
 
 		JButton closeBtn = new JButton("Confirm & Close");
 		closeBtn.setAction(action);
@@ -95,7 +102,8 @@ public class ControllerUI
 		slider.setMajorTickSpacing(10);
 		slider.setPaintTicks(true);
 		slider.setPaintLabels(true);
-		slider.setValue(0);
+		System.out.println(readDeadzone);
+		slider.setValue(readDeadzone);
 		springLayout.putConstraint(SpringLayout.NORTH, slider, 14, SpringLayout.NORTH, yMovementDrop);
 		springLayout.putConstraint(SpringLayout.EAST, slider, -89, SpringLayout.EAST, frame.getContentPane());
 		frame.getContentPane().add(slider);
@@ -105,7 +113,8 @@ public class ControllerUI
 		springLayout.putConstraint(SpringLayout.EAST, lblNewLabel, -141, SpringLayout.EAST, frame.getContentPane());
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		frame.getContentPane().add(lblNewLabel);
-
+		
+//		setValues();
 	}
 
 	@SuppressWarnings("serial")

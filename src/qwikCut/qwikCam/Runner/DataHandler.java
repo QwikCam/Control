@@ -134,6 +134,17 @@ public class DataHandler implements ControllerInterface
 		System.out.println(setting[0] + "," + setting[1] + "," + setting[2]);
 
 	}
+	
+	@Override
+	public int[] getLinearity()
+	{
+		int[] retval = new int[3];
+		retval[0] = this.linearityX;
+		retval[1] = this.linearityY;
+		retval[2] = this.linearityZ;
+		
+		return retval;
+	}
 
 	@Override
 	public boolean getLinearityChange()
@@ -147,6 +158,12 @@ public class DataHandler implements ControllerInterface
 		// zone 0-100 -> 0-1
 		// data 0-1
 		this.zone = zone/100f;
+	}
+	
+	@Override
+	public int getDeadzone()
+	{
+		return (int)(this.zone*100);
 	}
 
 	private int inputMap(Identifier id, float data)

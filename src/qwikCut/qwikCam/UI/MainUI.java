@@ -320,14 +320,17 @@ public class MainUI
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent windowEvent) 
 		    {
-		        if (JOptionPane.showConfirmDialog(frmQwikcamControl, 
-		            "Are you sure you want to close this window?", "Close Window?", 
-		            JOptionPane.YES_NO_OPTION,
-		            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION)
-		        {
-		        	camera.close();
-		            System.exit(0);
-		        }
+		    	if (camera.hasConnection())
+		    	{
+			        if (JOptionPane.showConfirmDialog(frmQwikcamControl, 
+				            "Are you sure you want to close this window?", "Close Window?", 
+				            JOptionPane.YES_NO_OPTION,
+				            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION)
+				        {
+				        	camera.close();
+				            System.exit(0);
+				        }
+		    	}
 		    }
 		});
 
