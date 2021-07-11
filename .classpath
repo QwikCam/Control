@@ -27,5 +27,7 @@
 	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/saaj-impl-2.0.0.jar"/>
 	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/glassfixh_jaxb/stax-ex-2.0.0.jar"/>
 	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/glassfixh_jaxb/commons-codec-1.15.jar"/>
+	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/HikVision.jar"/>
+	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/jna-5.8.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -4,8 +4,16 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.ConnectException;
 import java.util.ArrayList;
+import java.util.List;
 
+import org.onvif.ver10.schema.FloatRange;
+import org.onvif.ver10.schema.Profile;
+
+import de.onvif.soap.OnvifDevice;
+import de.onvif.soap.devices.PtzDevices;
+import jakarta.xml.soap.SOAPException;
 import qwikCut.qwikCam.UI.MainUI;
 
 public class Main
@@ -27,11 +35,37 @@ public class Main
 			fileNames.add("jinput-dx8_64.dll");
 			fileNames.add("jinput-raw_64.dll");
 			fileNames.add("jinput-wintab.dll");
+//			fileNames.add("HCNETSDK.dll");
 			copyAndPath(fileNames);
 		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
+		
+	      try {
+	          OnvifDevice nvt = new OnvifDevice("192.168.2.233:80", "admin", "12345678");
+	          List<Profile> profiles = nvt.getDevices().getProfiles();
+	          String profileToken = profiles.get(0).getToken();
+	 			
+	          PtzDevices ptzDevices = nvt.getPtz();
+
+	          FloatRange panRange = ptzDevices.getPanSpaces(profileToken);
+	          FloatRange tiltRange = ptzDevices.getTiltSpaces(profileToken);
+	          float zoom = ptzDevices.getZoomSpaces(profileToken).getMax();
+
+	          float x = (panRange.getMax() + panRange.getMin()) / 3f;
+	          float y = (tiltRange.getMax() + tiltRange.getMin()) / 3f;
+
+	          if (ptzDevices.isAbsoluteMoveSupported(profileToken)) {
+	          ptzDevices.absoluteMove(profileToken, x, y, zoom);
+	          }
+	       }
+	       catch (ConnectException e) {
+	          System.err.println("Could not connect to NVT.");
+	       }
+	       catch (SOAPException e) {
+	          e.printStackTrace();
+	       }
 
 		// start the threads
 		controller = new CtrlHandler(sync);
