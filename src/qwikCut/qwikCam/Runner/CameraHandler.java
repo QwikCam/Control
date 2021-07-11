@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import org.onvif.ver10.schema.Profile;
 
 import de.onvif.soap.OnvifDevice;
+import de.onvif.soap.devices.PtzDevices;
 
 // This class handles the movement of the camera
 // along with all communication and connection.
@@ -25,7 +26,7 @@ public class CameraHandler implements CameraInterface
 
 	// ONVIF related vars
 	OnvifDevice camera = null;
-//	PtzDevices ptzDevices; // = camera.getPtz();
+	PtzDevices ptzDevices; // = camera.getPtz();
 	String profileToken; // = profiles.get(0).getToken();
 	List<Profile> profiles;// = camera.getDevices().getProfiles();
 
@@ -64,22 +65,22 @@ public class CameraHandler implements CameraInterface
 	// the method that works best for the software
 	private void getOptimalMoveMethod()
 	{
-//		if (ptzDevices.isRelativeMoveSupported(profileToken))
-//		{
+		if (ptzDevices.isRelativeMoveSupported(profileToken))
+		{
 			movementType = 1;
 //			movementType = 2;
 			return;
-//		} else if (ptzDevices.isAbsoluteMoveSupported(profileToken))
-//		{
-//			movementType = 0;
-//			return;
-//		} else if (ptzDevices.isContinuosMoveSupported(profileToken))
-//		{
-//			movementType = 2;
-//			return;
-//		}
+		} else if (ptzDevices.isAbsoluteMoveSupported(profileToken))
+		{
+			movementType = 0;
+			return;
+		} else if (ptzDevices.isContinuosMoveSupported(profileToken))
+		{
+			movementType = 2;
+			return;
+		}
 
-//		movementType = -1;
+		movementType = -1;
 	}
 
 	// This method establishes the connection to the camera
@@ -95,12 +96,12 @@ public class CameraHandler implements CameraInterface
 			System.out.println("test");
 			camera = new OnvifDevice("192.168.2.233:80", username, password);
 			System.out.println("test");
-//			profiles = camera.getDevices().getProfiles();
+			profiles = camera.getDevices().getProfiles();
 			System.out.println("test");
 
 			profileToken = profiles.get(0).getToken();
 
-//			ptzDevices = camera.getPtz();
+			ptzDevices = camera.getPtz();
 
 			validConn = 1;
 			getOptimalMoveMethod();
@@ -210,7 +211,7 @@ public class CameraHandler implements CameraInterface
 		// to move in the new direction then save the last inputs for the next check
 		if (deltaX > 0.05 || deltaY > .05 || deltaZ > 0.05)
 		{
-//			ptzDevices.continuousMove(profileToken, X, Y, Z);
+			ptzDevices.continuousMove(profileToken, X, Y, Z);
 			lastX = X;
 			lastY = Y;
 			lastZ = Z;
@@ -219,7 +220,7 @@ public class CameraHandler implements CameraInterface
 		// if all the inputs are zero tell the camera to stop moving
 		if (X == 0f && Y == 0f && Z == 0f)
 		{
-//			ptzDevices.stopMove(profileToken);
+			ptzDevices.stopMove(profileToken);
 		}
 	}
 
@@ -231,14 +232,14 @@ public class CameraHandler implements CameraInterface
 
 		// Determine which movement types are supported with the order determining which one is used if multiple are supported
 		sb.append("All possible movement types sorted by priority of use:");
-//		sb.append("Relative movement support: " + ptzDevices.isRelativeMoveSupported(profileToken) + "\n");
-//		sb.append("Absolute movement support: " + ptzDevices.isAbsoluteMoveSupported(profileToken) + "\n");
-//		sb.append("Continous movement support: " + ptzDevices.isContinuosMoveSupported(profileToken) + "\n");
+		sb.append("Relative movement support: " + ptzDevices.isRelativeMoveSupported(profileToken) + "\n");
+		sb.append("Absolute movement support: " + ptzDevices.isAbsoluteMoveSupported(profileToken) + "\n");
+		sb.append("Continous movement support: " + ptzDevices.isContinuosMoveSupported(profileToken) + "\n");
 		
 		// ask the camera for the main stream URI and display it
 		try
 		{
-//			cameraUri = camera.getMedia().getRTSPStreamUri(profileToken);
+			cameraUri = camera.getMedia().getRTSPStreamUri(profileToken);
 			sb.append("Stream URL: \n" + cameraUri);
 		} catch (Exception e)
 		{
@@ -301,7 +302,7 @@ public class CameraHandler implements CameraInterface
 	@Override
 	public void close()
 	{
-//		ptzDevices.stopMove(profileToken);
+		ptzDevices.stopMove(profileToken);
 	}
 	
 	// Pass the speed limit values back when called to allow for the UI

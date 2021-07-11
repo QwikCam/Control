@@ -8,6 +8,7 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/miglayout15-swing.jar" sourcepath="miglayout-src.zip"/>
 	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/jinput-2.0.9.jar"/>
+	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/onvif.jar"/>
 	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/glassfixh_jaxb/codemodel-3.0.0.jar"/>
 	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/glassfixh_jaxb/dtd-parser-1.4.3.jar"/>
 	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/glassfixh_jaxb/istack-commons-runtime-4.0.0.jar"/>
@@ -26,24 +27,7 @@
 	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/saaj-impl-2.0.0.jar"/>
 	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/glassfixh_jaxb/stax-ex-2.0.0.jar"/>
 	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/glassfixh_jaxb/commons-codec-1.15.jar"/>
-	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/onvif2.jar" sourcepath="/onvif-java"/>
-	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/test/javax.xml.soap-api-1.4.0.jar"/>
-	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/test/onvif2-ws.jar" sourcepath="/onvif-ws-client/src"/>
-	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/test/cxf-rt-bindings-soap-3.3.2.jar"/>
-	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/test/cxf-rt-bindings-xml-3.3.2.jar"/>
-	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/test/cxf-api-2.6.17.jar"/>
-	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/test/geronimo-javamail_1.4_spec-1.7.1.jar"/>
-	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/test/stax2-api-3.1.4.jar"/>
-	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/test/woodstox-core-asl-4.4.0.jar"/>
-	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/test/wsdl4j-1.6.3.jar"/>
-	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/test/xmlschema-core-2.0.3.jar"/>
-	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/test/slf4j-api-1.7.26.jar"/>
-	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/test/jaxws-api-2.3.1.jar"/>
-	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/test/jaxws-rt-2.3.4.jar"/>
-	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/test/jaxb-api-2.3.1.jar"/>
-	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/test/jaxb-impl-2.3.4.jar"/>
-	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/test/streambuffer-1.5.10.jar"/>
-	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/test/policy-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/test/slf4j-simple-1.7.26.jar"/>
+	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/HikVision.jar"/>
+	<classpathentry kind="lib" path="C:/QwikCam/Control/Depend/jna-5.8.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

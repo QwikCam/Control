@@ -5,23 +5,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ConnectException;
-import java.net.MalformedURLException;
-import java.net.Proxy;
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.Duration;
-import javax.xml.soap.SOAPException;
-
-import org.onvif.ver10.schema.PTZSpeed;
-import org.onvif.ver10.schema.Vector1D;
-import org.onvif.ver10.schema.Vector2D;
-import org.onvif.ver20.ptz.wsdl.PTZ;
+import org.onvif.ver10.schema.FloatRange;
+import org.onvif.ver10.schema.Profile;
 
 import de.onvif.soap.OnvifDevice;
-//import jakarta.xml.soap.SOAPException;
+import de.onvif.soap.devices.PtzDevices;
+import jakarta.xml.soap.SOAPException;
 import qwikCut.qwikCam.UI.MainUI;
 
 public class Main
@@ -51,39 +43,29 @@ public class Main
 		}
 		
 	      try {
-//	    	  URL temp = new URL("http://192.168.2.233:80/");
-	          OnvifDevice nvt = new OnvifDevice("192.168.2.233/", "admin", "12345678");
-//	          Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 8080));
-	          String profileToken = "MediaProfile000";
-	          
-	          PTZ test = nvt.getPtz();
-	          PTZSpeed speed = new PTZSpeed();
-	          Vector2D vector = new Vector2D();
-	          vector.setX(1f);
-	          vector.setY(1f);
-	          speed.setPanTilt(vector);
-	          Vector1D v1d = new Vector1D();
-	          v1d.setX(0f);
-	          speed.setZoom(v1d);
-	          Duration duration = DatatypeFactory.newInstance().newDuration(1000);
-	          
-	          test.continuousMove(profileToken, speed, duration);
-	          
+	          OnvifDevice nvt = new OnvifDevice("192.168.2.233:80", "admin", "12345678");
+	          List<Profile> profiles = nvt.getDevices().getProfiles();
+	          String profileToken = profiles.get(0).getToken();
+	 			
+	          PtzDevices ptzDevices = nvt.getPtz();
+
+	          FloatRange panRange = ptzDevices.getPanSpaces(profileToken);
+	          FloatRange tiltRange = ptzDevices.getTiltSpaces(profileToken);
+	          float zoom = ptzDevices.getZoomSpaces(profileToken).getMax();
+
+	          float x = (panRange.getMax() + panRange.getMin()) / 3f;
+	          float y = (tiltRange.getMax() + tiltRange.getMin()) / 3f;
+
+	          if (ptzDevices.isAbsoluteMoveSupported(profileToken)) {
+	          ptzDevices.absoluteMove(profileToken, x, y, zoom);
+	          }
 	       }
 	       catch (ConnectException e) {
 	          System.err.println("Could not connect to NVT.");
 	       }
 	       catch (SOAPException e) {
 	          e.printStackTrace();
-	       } catch (MalformedURLException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (DatatypeConfigurationException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	       }
 
 		// start the threads
 		controller = new CtrlHandler(sync);
