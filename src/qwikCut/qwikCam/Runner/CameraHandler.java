@@ -68,7 +68,6 @@ public class CameraHandler implements CameraInterface
 		if (ptzDevices.isRelativeMoveSupported(profileToken))
 		{
 			movementType = 1;
-//			movementType = 2;
 			return;
 		} else if (ptzDevices.isAbsoluteMoveSupported(profileToken))
 		{
@@ -90,14 +89,10 @@ public class CameraHandler implements CameraInterface
 	// returns a -1 otherwise
 	private int connectCamera()
 	{
-//		return connectHikvision();
 		try
 		{
-			System.out.println("test");
-			camera = new OnvifDevice("192.168.2.233:80", username, password);
-			System.out.println("test");
+			camera = new OnvifDevice(ip, username, password);
 			profiles = camera.getDevices().getProfiles();
-			System.out.println("test");
 
 			profileToken = profiles.get(0).getToken();
 
@@ -105,7 +100,6 @@ public class CameraHandler implements CameraInterface
 
 			validConn = 1;
 			getOptimalMoveMethod();
-			
 
 			// if the camera does not support any of the movement types
 			// make this method return 0 to throw a warning to the user
@@ -129,30 +123,6 @@ public class CameraHandler implements CameraInterface
 			return 0;
 		}
 	}
-	
-//	private int connectHikvision()
-//	{
-//
-//		LoginPlay lp = new LoginPlay();
-//		
-//		try
-//		{
-//			lp.doLogin(ip, (short)8000, username, password);
-//			
-//			Control.cloudControl(ip, CloudCode.PAN_LEFT, CloudCode.SPEED_LV6, CloudCode.START);
-//			
-//			Thread.sleep(1000);
-//			
-//			Control.cloudControl(ip, CloudCode.PAN_LEFT, CloudCode.SPEED_LV6, CloudCode.END);
-//		} catch (Exception e)
-//		{
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			return 0;
-//		}
-//		
-//		return 1;
-//	}
 
 	// checks if the camera needs to be moved based of input
 	// if it does it will call the optimal method based on prior
@@ -192,7 +162,7 @@ public class CameraHandler implements CameraInterface
 
 	private void moveRelative()
 	{
-		
+
 	}
 
 	private void moveContinous()
