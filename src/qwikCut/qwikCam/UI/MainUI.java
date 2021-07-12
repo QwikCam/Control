@@ -67,7 +67,7 @@ public class MainUI
 			{
 				tiltProgressBar.setValue(ctrlHandler.readController(2));
 				panProgressBar.setValue(ctrlHandler.readController(4));
-				zoomProgressBar.setValue(ctrlHandler.readController(3));
+				zoomProgressBar.setValue(-ctrlHandler.readController(3));
 				frmQwikcamControl.repaint();
 			}
 		};

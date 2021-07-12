@@ -65,15 +65,21 @@ public class CameraHandler implements CameraInterface
 	// the method that works best for the software
 	private void getOptimalMoveMethod()
 	{
-		if (ptzDevices.isRelativeMoveSupported(profileToken))
-		{
-			movementType = 1;
-			return;
-		} else if (ptzDevices.isAbsoluteMoveSupported(profileToken))
-		{
-			movementType = 0;
-			return;
-		} else if (ptzDevices.isContinuosMoveSupported(profileToken))
+//		if (ptzDevices.isRelativeMoveSupported(profileToken))
+//		{
+////			movementType = 2;
+//			movementType = 1;
+//			return;
+//		} else if (ptzDevices.isAbsoluteMoveSupported(profileToken))
+//		{
+//			movementType = 0;
+//			return;
+//		} else if (ptzDevices.isContinuosMoveSupported(profileToken))
+//		{
+//			movementType = 2;
+//			return;
+//		}
+		if (ptzDevices.isContinuosMoveSupported(profileToken))
 		{
 			movementType = 2;
 			return;
@@ -155,14 +161,17 @@ public class CameraHandler implements CameraInterface
 		timer.scheduleAtFixedRate(tx, 0, 10);
 	}
 
+	// All move methods have maximum float values as 1.0
+	// All move methods have minimum float values of -1.0
 	private void moveAbsolute()
 	{
-
+		// not implemented since camera did not respond or support
 	}
 
 	private void moveRelative()
 	{
-
+		// not implemented since camera did not respond or support
+		ptzDevices.relativeMove(profileToken, 1f, 1f, 1f);
 	}
 
 	private void moveContinous()
@@ -170,7 +179,7 @@ public class CameraHandler implements CameraInterface
 		// get the current controller inputs scaled by the speed
 		float X = (controller.readController(4) / 1000f)*(pan/100f);
 		float Y = (controller.readController(2) / 1000f)*(tilt/100f);
-		float Z = (controller.readController(3) / 1000f)*(zoom/100f);
+		float Z = -(controller.readController(3) / 1000f)*(zoom/100f);
 		
 		// calculate how much the controller input changed from the last check
 		float deltaX = Math.abs(X - lastX);

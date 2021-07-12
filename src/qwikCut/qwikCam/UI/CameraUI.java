@@ -130,13 +130,23 @@ public class CameraUI
 		{
 			// ping the given IP address to verify the device can be reached
 			String ip = ipTextField.getText();
+			String[] noPort = ip.split(":");
+			
+			// check for a port
+			boolean port = true;
+			
+			if (noPort.length != 2)
+			{
+				JOptionPane.showMessageDialog(null, "Please specify a port!\n If you do not know the port please\naccess the cameras web page and look\nat the settings or read the instructions!");
+				port = false;
+			}
 			
 			// check if the string matches valid IPv4 format
-			if (isValid(ip))
+			if (isValid(noPort[0]) && port)
 			{
 				try
 				{
-					InetAddress processedIP = InetAddress.getByName(ip);
+					InetAddress processedIP = InetAddress.getByName(noPort[0]);
 					
 					if (processedIP.isReachable(5000))
 					{
@@ -153,7 +163,7 @@ public class CameraUI
 					IPError.printStackTrace();
 				}
 			}
-			else
+			else if (!isValid(noPort[0]))
 			{
 				JOptionPane.showMessageDialog(null, "The IP address you entered was not valid!");
 			}
@@ -172,7 +182,7 @@ public class CameraUI
 		public void actionPerformed(ActionEvent e)
 		{
 			//OnvifDevice nvt = new OnvifDevice("192.168.2.191:8000", "admin", "");
-			String ip = ipTextField.getText() + ":8000";
+			String ip = ipTextField.getText();
 			String username = usernameInput.getText();
 			String password = String.valueOf(passwordField.getPassword());
 			
