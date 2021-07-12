@@ -25,6 +25,7 @@ import javax.swing.SpringLayout;
 
 import qwikCut.qwikCam.Runner.CameraInterface;
 import qwikCut.qwikCam.Runner.ControllerInterface;
+import javax.swing.JRadioButton;
 
 public class MainUI
 {
@@ -42,6 +43,7 @@ public class MainUI
 	public JTextPane infoDsp;
 	public JButton cameraSettingsBtn;
 	public JButton ctrlConfirm, streamUriBtn;
+	public JRadioButton speedBtn;
 
 	private ControllerInterface ctrlHandler;
 	private CameraInterface camera;
@@ -68,6 +70,7 @@ public class MainUI
 				tiltProgressBar.setValue(ctrlHandler.readController(2));
 				panProgressBar.setValue(ctrlHandler.readController(4));
 				zoomProgressBar.setValue(-ctrlHandler.readController(3));
+				speedBtn.setSelected(ctrlHandler.speedBtn());
 				frmQwikcamControl.repaint();
 			}
 		};
@@ -312,6 +315,12 @@ public class MainUI
 			}
 		});
 		frmQwikcamControl.getContentPane().add(streamUriBtn);
+		
+		speedBtn = new JRadioButton("Speed Button");
+		speedBtn.setEnabled(false);
+		springLayout.putConstraint(SpringLayout.NORTH, speedBtn, 0, SpringLayout.NORTH, zoomLvlLabel);
+		springLayout.putConstraint(SpringLayout.EAST, speedBtn, 0, SpringLayout.EAST, cameraButton);
+		frmQwikcamControl.getContentPane().add(speedBtn);
 		
 		frmQwikcamControl.addWindowListener(new java.awt.event.WindowAdapter() 
 		{

@@ -7,6 +7,7 @@ import java.util.TimerTask;
 import net.java.games.input.Component;
 import net.java.games.input.Component.Identifier;
 import net.java.games.input.Component.Identifier.Axis;
+import net.java.games.input.Component.Identifier.Button;
 import net.java.games.input.Controller;
 import net.java.games.input.Event;
 import net.java.games.input.EventQueue;
@@ -21,7 +22,8 @@ public class DataHandler implements ControllerInterface
 	private boolean hasRan = false;
 	private float zone = 0;
 
-	private int RX, RY, Z, X, Y;
+	private int RX, RY, Z, X, Y, B;
+	private boolean speed = false;
 
 	// reads the values from the controller
 	// stores the axis data to variables for other methods to read
@@ -64,6 +66,10 @@ public class DataHandler implements ControllerInterface
 					{
 						// Left Stick Up and Down
 						Y = inputMap(id, data);
+					} else if (id == Button._5)
+					{
+						speed = !speed;
+						B = (int)data;
 					}
 				}
 
@@ -201,6 +207,8 @@ public class DataHandler implements ControllerInterface
 			return X;
 		case 5:
 			return Y;
+		case 6:
+			return B;
 		default:
 			return 0;
 		}
@@ -259,5 +267,12 @@ public class DataHandler implements ControllerInterface
 	{
 		return (int)(this.zone*100);
 	}
-
+	
+	// Show the user that they have commanded an increase in speed
+	// via a button press
+	@Override
+	public boolean speedBtn()
+	{
+		return this.speed;
+	}
 }

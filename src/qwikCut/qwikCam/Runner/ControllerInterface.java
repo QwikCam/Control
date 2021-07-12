@@ -21,4 +21,6 @@ public interface ControllerInterface
 	public int[] getLinearity();
 	
 	public int getDeadzone();
+	
+	public boolean speedBtn();
 }

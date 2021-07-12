@@ -52,6 +52,9 @@ public class CameraHandler implements CameraInterface
 	int pan = 50;
 	int tilt = 50;
 	int zoom = 50;
+	
+	// camera command limiter
+	boolean hasMoved = false;
 
 	public CameraHandler(ControllerInterface controller)
 	{
@@ -103,6 +106,8 @@ public class CameraHandler implements CameraInterface
 			profileToken = profiles.get(0).getToken();
 
 			ptzDevices = camera.getPtz();
+			
+			
 
 			validConn = 1;
 			getOptimalMoveMethod();
@@ -177,10 +182,31 @@ public class CameraHandler implements CameraInterface
 	private void moveContinous()
 	{
 		// get the current controller inputs scaled by the speed
-		float X = (controller.readController(4) / 1000f)*(pan/100f);
-		float Y = (controller.readController(2) / 1000f)*(tilt/100f);
+		float X = ((controller.readController(4) / 1000f)*(pan/100f));
+		float Y = ((controller.readController(2) / 1000f)*(tilt/100f));
 		float Z = -(controller.readController(3) / 1000f)*(zoom/100f);
+//		float button = controller.readController(6);
 		
+//		if (button == 1.0f)
+//		{
+//			if (X > 0)
+//			{
+//				X = Math.min(X*2f, 1f);
+//			}
+//			else
+//			{
+//				X = Math.max(X*2f, -1f);
+//			}
+//			if (Y > 0)
+//			{
+//				Y = Math.min(Y*2f, 1f);
+//			}
+//			else
+//			{
+//				Y = Math.max(Y*2f, -1f);
+//			}
+//		}
+//		
 		// calculate how much the controller input changed from the last check
 		float deltaX = Math.abs(X - lastX);
 		float deltaY = Math.abs(Y - lastY);
@@ -190,16 +216,19 @@ public class CameraHandler implements CameraInterface
 		// to move in the new direction then save the last inputs for the next check
 		if (deltaX > 0.05 || deltaY > .05 || deltaZ > 0.05)
 		{
+			System.out.println("X: " + X + ", Y: " + Y);
 			ptzDevices.continuousMove(profileToken, X, Y, Z);
 			lastX = X;
 			lastY = Y;
 			lastZ = Z;
+			hasMoved = true;
 		}
 		
 		// if all the inputs are zero tell the camera to stop moving
-		if (X == 0f && Y == 0f && Z == 0f)
+		if (X == 0f && Y == 0f && Z == 0f && hasMoved)
 		{
 			ptzDevices.stopMove(profileToken);
+			hasMoved = false;
 		}
 	}
 
