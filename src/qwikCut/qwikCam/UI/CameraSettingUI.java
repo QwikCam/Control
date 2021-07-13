@@ -20,7 +20,7 @@ public class CameraSettingUI
 {
 	private CameraInterface camera;
 
-	private JFrame frmQwikcamControl;
+	private JFrame frame;
 	private JSlider panSlider, tiltSlider, zoomSlider;
 	
 	private int[] speedLimits;
@@ -33,7 +33,7 @@ public class CameraSettingUI
 		this.camera = camera;
 		this.speedLimits = camera.getSpeedLimits();
 		initialize();
-		frmQwikcamControl.setVisible(true);
+		frame.setVisible(true);
 	}
 
 	/**
@@ -41,34 +41,34 @@ public class CameraSettingUI
 	 */
 	private void initialize()
 	{
-		frmQwikcamControl = new JFrame();
-		frmQwikcamControl.setTitle("QwikCam Control - Camera Settings");
-		frmQwikcamControl.setBounds(100, 100, 306, 331);
-		frmQwikcamControl.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frame = new JFrame();
+		frame.setTitle("QwikCam Control - Camera Settings");
+		frame.setBounds(100, 100, 306, 331);
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		SpringLayout springLayout = new SpringLayout();
-		frmQwikcamControl.getContentPane().setLayout(springLayout);
+		frame.getContentPane().setLayout(springLayout);
 		
 		URL iconURL = getClass().getResource("/qwikCut/qwikCam/UI/logo.png");
 		ImageIcon icon = new ImageIcon(iconURL);
-		frmQwikcamControl.setIconImage(icon.getImage());
+		frame.setIconImage(icon.getImage());
 		
 		panSlider = new JSlider();
 		panSlider.setValue(speedLimits[0]);
 		panSlider.setToolTipText("Pan speed limit");
-		springLayout.putConstraint(SpringLayout.NORTH, panSlider, 43, SpringLayout.NORTH, frmQwikcamControl.getContentPane());
-		springLayout.putConstraint(SpringLayout.WEST, panSlider, 21, SpringLayout.WEST, frmQwikcamControl.getContentPane());
-		frmQwikcamControl.getContentPane().add(panSlider);
+		springLayout.putConstraint(SpringLayout.NORTH, panSlider, 43, SpringLayout.NORTH, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.WEST, panSlider, 21, SpringLayout.WEST, frame.getContentPane());
+		frame.getContentPane().add(panSlider);
 		
 		JLabel panLabel = new JLabel("Pan Speed Limit");
 		panLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		springLayout.putConstraint(SpringLayout.WEST, panLabel, 34, SpringLayout.WEST, frmQwikcamControl.getContentPane());
+		springLayout.putConstraint(SpringLayout.WEST, panLabel, 34, SpringLayout.WEST, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.SOUTH, panLabel, -7, SpringLayout.NORTH, panSlider);
-		frmQwikcamControl.getContentPane().add(panLabel);
+		frame.getContentPane().add(panLabel);
 		
 		JLabel tiltLabel = new JLabel("Tilt Speed Limit");
 		springLayout.putConstraint(SpringLayout.WEST, tiltLabel, 0, SpringLayout.WEST, panLabel);
 		tiltLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		frmQwikcamControl.getContentPane().add(tiltLabel);
+		frame.getContentPane().add(tiltLabel);
 		
 		tiltSlider = new JSlider();
 		springLayout.putConstraint(SpringLayout.SOUTH, tiltLabel, -6, SpringLayout.NORTH, tiltSlider);
@@ -76,24 +76,24 @@ public class CameraSettingUI
 		springLayout.putConstraint(SpringLayout.WEST, tiltSlider, 0, SpringLayout.WEST, panSlider);
 		tiltSlider.setValue(speedLimits[1]);
 		tiltSlider.setToolTipText("Tilt speed limit");
-		frmQwikcamControl.getContentPane().add(tiltSlider);
+		frame.getContentPane().add(tiltSlider);
 		
 		JLabel zoomLabel = new JLabel("Zoom Speed Limit");
 		springLayout.putConstraint(SpringLayout.NORTH, zoomLabel, 20, SpringLayout.SOUTH, tiltSlider);
 		springLayout.putConstraint(SpringLayout.WEST, zoomLabel, 0, SpringLayout.WEST, panLabel);
 		zoomLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		frmQwikcamControl.getContentPane().add(zoomLabel);
+		frame.getContentPane().add(zoomLabel);
 		
 		zoomSlider = new JSlider();
 		springLayout.putConstraint(SpringLayout.NORTH, zoomSlider, 17, SpringLayout.SOUTH, zoomLabel);
 		springLayout.putConstraint(SpringLayout.EAST, zoomSlider, 0, SpringLayout.EAST, panSlider);
 		zoomSlider.setValue(speedLimits[2]);
 		zoomSlider.setToolTipText("Zoom speed limit");
-		frmQwikcamControl.getContentPane().add(zoomSlider);
+		frame.getContentPane().add(zoomSlider);
 		
 		JButton closeBtn = new JButton("Apply and Close");
 		springLayout.putConstraint(SpringLayout.NORTH, closeBtn, 27, SpringLayout.SOUTH, zoomSlider);
-		springLayout.putConstraint(SpringLayout.WEST, closeBtn, 88, SpringLayout.WEST, frmQwikcamControl.getContentPane());
+		springLayout.putConstraint(SpringLayout.WEST, closeBtn, 88, SpringLayout.WEST, frame.getContentPane());
 		closeBtn.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -107,11 +107,11 @@ public class CameraSettingUI
 						int zoomLimit = zoomSlider.getValue();
 						
 						camera.setSpeedLimits(panLimit, tiltLimit, zoomLimit);
-						frmQwikcamControl.dispose();
+						frame.dispose();
 					}
 				});
 			}
 		});
-		frmQwikcamControl.getContentPane().add(closeBtn);
+		frame.getContentPane().add(closeBtn);
 	}
 }

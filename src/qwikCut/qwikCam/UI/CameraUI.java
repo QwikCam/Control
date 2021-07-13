@@ -23,7 +23,7 @@ public class CameraUI
 {
 
 	public static JButton confirmBtn2;
-	private JFrame frmQwikcamControl2;
+	private JFrame frame;
 	private JTextField ipTextField;
 	private JTextField usernameInput;
 	private JLabel passwordLabel;
@@ -39,7 +39,7 @@ public class CameraUI
 	public CameraUI(CameraInterface camera)
 	{
 		initialize();
-		frmQwikcamControl2.setVisible(true);
+		frame.setVisible(true);
 		this.camera = camera;
 	}
 
@@ -48,27 +48,27 @@ public class CameraUI
 	 */
 	private void initialize()
 	{
-		frmQwikcamControl2 = new JFrame();
-		frmQwikcamControl2.setTitle("QwikCam Control - Camera Selection");
-		frmQwikcamControl2.setBounds(100, 100, 344, 300);
+		frame = new JFrame();
+		frame.setTitle("QwikCam Control - Camera Selection");
+		frame.setBounds(100, 100, 344, 300);
 //		frmQwikcamControl2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		SpringLayout springLayout = new SpringLayout();
-		frmQwikcamControl2.getContentPane().setLayout(springLayout);
+		frame.getContentPane().setLayout(springLayout);
 		
 		URL iconURL = getClass().getResource("/qwikCut/qwikCam/UI/logo.png");
 		ImageIcon icon = new ImageIcon(iconURL);
-		frmQwikcamControl2.setIconImage(icon.getImage());
+		frame.setIconImage(icon.getImage());
 
 		JLabel ipLabel = new JLabel("Camera IP");
-		springLayout.putConstraint(SpringLayout.NORTH, ipLabel, 10, SpringLayout.NORTH, frmQwikcamControl2.getContentPane());
-		springLayout.putConstraint(SpringLayout.WEST, ipLabel, 10, SpringLayout.WEST, frmQwikcamControl2.getContentPane());
-		frmQwikcamControl2.getContentPane().add(ipLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, ipLabel, 10, SpringLayout.NORTH, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.WEST, ipLabel, 10, SpringLayout.WEST, frame.getContentPane());
+		frame.getContentPane().add(ipLabel);
 
 		ipTextField = new JTextField();
 		ipTextField.setText("Enter IPv4");
 		springLayout.putConstraint(SpringLayout.NORTH, ipTextField, 3, SpringLayout.SOUTH, ipLabel);
 		springLayout.putConstraint(SpringLayout.WEST, ipTextField, 0, SpringLayout.WEST, ipLabel);
-		frmQwikcamControl2.getContentPane().add(ipTextField);
+		frame.getContentPane().add(ipTextField);
 		ipTextField.setColumns(10);
 
 		usernameInput = new JTextField();
@@ -76,36 +76,36 @@ public class CameraUI
 		springLayout.putConstraint(SpringLayout.WEST, usernameInput, 0, SpringLayout.WEST, ipLabel);
 		usernameInput.setText("Username");
 		usernameInput.setColumns(10);
-		frmQwikcamControl2.getContentPane().add(usernameInput);
+		frame.getContentPane().add(usernameInput);
 
 		JLabel usernameLabel = new JLabel("Camera Username");
 		springLayout.putConstraint(SpringLayout.NORTH, usernameLabel, 15, SpringLayout.SOUTH, ipTextField);
 		springLayout.putConstraint(SpringLayout.WEST, usernameLabel, 0, SpringLayout.WEST, ipLabel);
-		frmQwikcamControl2.getContentPane().add(usernameLabel);
+		frame.getContentPane().add(usernameLabel);
 
 		passwordLabel = new JLabel("Camera Password");
 		springLayout.putConstraint(SpringLayout.NORTH, passwordLabel, 6, SpringLayout.SOUTH, usernameInput);
 		springLayout.putConstraint(SpringLayout.WEST, passwordLabel, 0, SpringLayout.WEST, ipLabel);
-		frmQwikcamControl2.getContentPane().add(passwordLabel);
+		frame.getContentPane().add(passwordLabel);
 
 		passwordField = new JPasswordField();
 		springLayout.putConstraint(SpringLayout.NORTH, passwordField, 6, SpringLayout.SOUTH, passwordLabel);
-		springLayout.putConstraint(SpringLayout.WEST, passwordField, 10, SpringLayout.WEST, frmQwikcamControl2.getContentPane());
+		springLayout.putConstraint(SpringLayout.WEST, passwordField, 10, SpringLayout.WEST, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.EAST, passwordField, 0, SpringLayout.EAST, ipTextField);
 		passwordField.setHorizontalAlignment(SwingConstants.LEFT);
-		frmQwikcamControl2.getContentPane().add(passwordField);
+		frame.getContentPane().add(passwordField);
 
 		JButton verifyButton = new JButton("Verify");
 		verifyButton.setAction(action);
 		springLayout.putConstraint(SpringLayout.NORTH, verifyButton, 16, SpringLayout.SOUTH, passwordField);
 		springLayout.putConstraint(SpringLayout.WEST, verifyButton, 0, SpringLayout.WEST, ipLabel);
-		frmQwikcamControl2.getContentPane().add(verifyButton);
+		frame.getContentPane().add(verifyButton);
 
 		JButton confirmBtn = new JButton("Confirm and Close");
 		confirmBtn.setAction(action_1);
 		springLayout.putConstraint(SpringLayout.NORTH, confirmBtn, 6, SpringLayout.SOUTH, verifyButton);
 		springLayout.putConstraint(SpringLayout.WEST, confirmBtn, 0, SpringLayout.WEST, ipLabel);
-		frmQwikcamControl2.getContentPane().add(confirmBtn);
+		frame.getContentPane().add(confirmBtn);
 		confirmBtn.setEnabled(false);
 		confirmBtn2 = confirmBtn;
 
@@ -117,10 +117,10 @@ public class CameraUI
 			public void actionPerformed(ActionEvent e)
 			{
 //				System.out.println("test");
-				frmQwikcamControl2.dispose();
+				frame.dispose();
 			}
 		});
-		frmQwikcamControl2.getContentPane().add(cancelBtn);
+		frame.getContentPane().add(cancelBtn);
 	}
 
 	@SuppressWarnings("serial")
@@ -202,7 +202,7 @@ public class CameraUI
 			}
 			else
 			{
-				frmQwikcamControl2.dispose();
+				frame.dispose();
 			}
 		}
 	}
