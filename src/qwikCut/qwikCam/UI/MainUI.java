@@ -6,6 +6,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -14,18 +15,19 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
+import javax.swing.JRadioButton;
 import javax.swing.JTextPane;
 import javax.swing.SpringLayout;
 
 import qwikCut.qwikCam.Runner.CameraInterface;
 import qwikCut.qwikCam.Runner.ControllerInterface;
-import javax.swing.JRadioButton;
 
 public class MainUI
 {
@@ -117,6 +119,10 @@ public class MainUI
 		frmQwikcamControl.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		SpringLayout springLayout = new SpringLayout();
 		frmQwikcamControl.getContentPane().setLayout(springLayout);
+		
+		URL iconURL = getClass().getResource("/qwikCut/qwikCam/UI/logo.png");
+		ImageIcon icon = new ImageIcon(iconURL);
+		frmQwikcamControl.setIconImage(icon.getImage());
 
 		ctrlSelect = new JComboBox<>();
 		springLayout.putConstraint(SpringLayout.NORTH, ctrlSelect, 48, SpringLayout.NORTH, frmQwikcamControl.getContentPane());

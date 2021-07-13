@@ -2,10 +2,12 @@ package qwikCut.qwikCam.UI;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -22,7 +24,7 @@ public class ControllerUI
 	private ControllerInterface ctrlInterface;
 	private JComboBox<String> xMovementDrop, yMovementDrop, zMovementDrop;
 
-	private JFrame frame;
+	private JFrame frmControllerSettings;
 	private JSlider slider;
 	
 	private int[] readLinearity;
@@ -37,7 +39,7 @@ public class ControllerUI
 		this.readLinearity = ctrlInterface.getLinearity();
 		this.readDeadzone = ctrlInterface.getDeadzone();
 		initialize();
-		frame.setVisible(true);
+		frmControllerSettings.setVisible(true);
 	}
 
 	/**
@@ -45,56 +47,61 @@ public class ControllerUI
 	 */
 	private void initialize()
 	{
-		frame = new JFrame();
-		frame.setBounds(100, 100, 500, 300);
-		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frmControllerSettings = new JFrame();
+		frmControllerSettings.setTitle("QwikCam Control - Controller Settings");
+		frmControllerSettings.setBounds(100, 100, 500, 300);
+		frmControllerSettings.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		SpringLayout springLayout = new SpringLayout();
-		frame.getContentPane().setLayout(springLayout);
+		frmControllerSettings.getContentPane().setLayout(springLayout);
+		
+		URL iconURL = getClass().getResource("/qwikCut/qwikCam/UI/logo.png");
+		ImageIcon icon = new ImageIcon(iconURL);
+		frmControllerSettings.setIconImage(icon.getImage());
 
 		xMovementDrop = new JComboBox<String>();
-		springLayout.putConstraint(SpringLayout.NORTH, xMovementDrop, 45, SpringLayout.NORTH, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.WEST, xMovementDrop, 10, SpringLayout.WEST, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, xMovementDrop, -395, SpringLayout.EAST, frame.getContentPane());
-		frame.getContentPane().add(xMovementDrop);
+		springLayout.putConstraint(SpringLayout.NORTH, xMovementDrop, 45, SpringLayout.NORTH, frmControllerSettings.getContentPane());
+		springLayout.putConstraint(SpringLayout.WEST, xMovementDrop, 10, SpringLayout.WEST, frmControllerSettings.getContentPane());
+		springLayout.putConstraint(SpringLayout.EAST, xMovementDrop, -395, SpringLayout.EAST, frmControllerSettings.getContentPane());
+		frmControllerSettings.getContentPane().add(xMovementDrop);
 		xMovementDrop.addItem("Linear");
 		xMovementDrop.addItem("Exponential");
 		xMovementDrop.setSelectedIndex(readLinearity[0]);
 
 		zMovementDrop = new JComboBox<String>();
-		springLayout.putConstraint(SpringLayout.WEST, zMovementDrop, 10, SpringLayout.WEST, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.SOUTH, zMovementDrop, -77, SpringLayout.SOUTH, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.WEST, zMovementDrop, 10, SpringLayout.WEST, frmControllerSettings.getContentPane());
+		springLayout.putConstraint(SpringLayout.SOUTH, zMovementDrop, -77, SpringLayout.SOUTH, frmControllerSettings.getContentPane());
 		springLayout.putConstraint(SpringLayout.EAST, zMovementDrop, 0, SpringLayout.EAST, xMovementDrop);
-		frame.getContentPane().add(zMovementDrop);
+		frmControllerSettings.getContentPane().add(zMovementDrop);
 		zMovementDrop.addItem("Linear");
 		zMovementDrop.addItem("Exponential");
 		zMovementDrop.setSelectedIndex(readLinearity[2]);
 
 		JButton cancelBtn = new JButton("Cancel");
-		springLayout.putConstraint(SpringLayout.SOUTH, cancelBtn, 0, SpringLayout.SOUTH, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, cancelBtn, 0, SpringLayout.EAST, frame.getContentPane());
-		frame.getContentPane().add(cancelBtn);
+		springLayout.putConstraint(SpringLayout.SOUTH, cancelBtn, 0, SpringLayout.SOUTH, frmControllerSettings.getContentPane());
+		springLayout.putConstraint(SpringLayout.EAST, cancelBtn, 0, SpringLayout.EAST, frmControllerSettings.getContentPane());
+		frmControllerSettings.getContentPane().add(cancelBtn);
 		cancelBtn.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				frame.dispose();
+				frmControllerSettings.dispose();
 			}
 		});
 
 		yMovementDrop = new JComboBox<String>();
-		springLayout.putConstraint(SpringLayout.NORTH, yMovementDrop, 103, SpringLayout.NORTH, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.NORTH, yMovementDrop, 103, SpringLayout.NORTH, frmControllerSettings.getContentPane());
 		springLayout.putConstraint(SpringLayout.NORTH, zMovementDrop, 39, SpringLayout.SOUTH, yMovementDrop);
-		springLayout.putConstraint(SpringLayout.WEST, yMovementDrop, 10, SpringLayout.WEST, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.WEST, yMovementDrop, 10, SpringLayout.WEST, frmControllerSettings.getContentPane());
 		springLayout.putConstraint(SpringLayout.EAST, yMovementDrop, 0, SpringLayout.EAST, xMovementDrop);
 		yMovementDrop.setModel(new DefaultComboBoxModel<String>(new String[] { "Linear", "Exponential" }));
-		frame.getContentPane().add(yMovementDrop);
+		frmControllerSettings.getContentPane().add(yMovementDrop);
 		yMovementDrop.setSelectedIndex(readLinearity[1]);
 
 		JButton closeBtn = new JButton("Confirm & Close");
 		closeBtn.setAction(action);
-		springLayout.putConstraint(SpringLayout.SOUTH, closeBtn, 0, SpringLayout.SOUTH, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.SOUTH, closeBtn, 0, SpringLayout.SOUTH, frmControllerSettings.getContentPane());
 		springLayout.putConstraint(SpringLayout.EAST, closeBtn, -24, SpringLayout.WEST, cancelBtn);
-		frame.getContentPane().add(closeBtn);
+		frmControllerSettings.getContentPane().add(closeBtn);
 		
 		slider = new JSlider();
 		slider.setMinorTickSpacing(2);
@@ -104,14 +111,14 @@ public class ControllerUI
 		System.out.println(readDeadzone);
 		slider.setValue(readDeadzone);
 		springLayout.putConstraint(SpringLayout.NORTH, slider, 14, SpringLayout.NORTH, yMovementDrop);
-		springLayout.putConstraint(SpringLayout.EAST, slider, -89, SpringLayout.EAST, frame.getContentPane());
-		frame.getContentPane().add(slider);
+		springLayout.putConstraint(SpringLayout.EAST, slider, -89, SpringLayout.EAST, frmControllerSettings.getContentPane());
+		frmControllerSettings.getContentPane().add(slider);
 		
 		JLabel lblNewLabel = new JLabel("Deadzone Sensitivity");
 		springLayout.putConstraint(SpringLayout.SOUTH, lblNewLabel, -15, SpringLayout.NORTH, slider);
-		springLayout.putConstraint(SpringLayout.EAST, lblNewLabel, -141, SpringLayout.EAST, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.EAST, lblNewLabel, -141, SpringLayout.EAST, frmControllerSettings.getContentPane());
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		frame.getContentPane().add(lblNewLabel);
+		frmControllerSettings.getContentPane().add(lblNewLabel);
 	}
 
 	@SuppressWarnings("serial")
@@ -154,7 +161,7 @@ public class ControllerUI
 			System.out.println(slider.getValue());
 			ctrlInterface.setDeadzone(slider.getValue());
 
-			frame.dispose();
+			frmControllerSettings.dispose();
 		}
 	}
 }

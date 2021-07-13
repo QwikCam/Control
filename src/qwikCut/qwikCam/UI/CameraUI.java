@@ -3,9 +3,11 @@ package qwikCut.qwikCam.UI;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.InetAddress;
+import java.net.URL;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -52,6 +54,10 @@ public class CameraUI
 //		frmQwikcamControl2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		SpringLayout springLayout = new SpringLayout();
 		frmQwikcamControl2.getContentPane().setLayout(springLayout);
+		
+		URL iconURL = getClass().getResource("/qwikCut/qwikCam/UI/logo.png");
+		ImageIcon icon = new ImageIcon(iconURL);
+		frmQwikcamControl2.setIconImage(icon.getImage());
 
 		JLabel ipLabel = new JLabel("Camera IP");
 		springLayout.putConstraint(SpringLayout.NORTH, ipLabel, 10, SpringLayout.NORTH, frmQwikcamControl2.getContentPane());
